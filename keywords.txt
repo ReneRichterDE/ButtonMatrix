@@ -1,0 +1,50 @@
+#######################################
+# Syntax Coloring Map for ButtonMatrix
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ButtonMatrix			KEYWORD1
+Button      			KEYWORD1
+IOHandlerItf    		KEYWORD1
+NativeIOHandler			KEYWORD1
+AdafruitI2CIOHandler	KEYWORD1
+STATE					KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+ADFI2C					KEYWORD2
+setScanInterval			KEYWORD2
+init					KEYWORD2
+update					KEYWORD2
+getButton				KEYWORD2
+getNumButtons			KEYWORD2
+getNumber				KEYWORD2
+isEnabled				KEYWORD2
+setEnabled				KEYWORD2
+getCurState				KEYWORD2
+getPrevState			KEYWORD2
+isPressed				KEYWORD2
+isLongPressed			KEYWORD2
+getCurStateDuration		KEYWORD2
+getPrevStateDuration	KEYWORD2
+swallowNextRoseEvent	KEYWORD2
+forceReleased			KEYWORD2
+UpdateState				KEYWORD2
+hasStateChanged			KEYWORD2
+fell					KEYWORD2
+rose					KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+
+STATE_UNINITIALIZED     KEYWORD3
+STATE_RELEASED          KEYWORD3
+STATE_PRESSED           KEYWORD3

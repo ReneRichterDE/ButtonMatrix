@@ -32,7 +32,7 @@
 
 
 
-namespace ButtonMatrix
+namespace RSys
 {    
     /**
         @brief Provides a simple interface for using a button matrix with Arduino

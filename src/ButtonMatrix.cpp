@@ -24,7 +24,7 @@
 #include"ButtonMatrix.h"
 
 
-namespace ButtonMatrix
+namespace RSys
 {    
     
     ButtonMatrix::ButtonMatrix(

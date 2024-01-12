@@ -27,7 +27,7 @@
 #include <Arduino.h>
 
 
-namespace ButtonMatrix
+namespace RSys
 { 
     /**
         @brief Abstract interface to handle IO      

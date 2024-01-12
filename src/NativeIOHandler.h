@@ -28,7 +28,7 @@
 #include <IOHandlerItf.h>
 
 
-namespace ButtonMatrix
+namespace RSys
 { 
     /**
         @brief Handles controller native digital IO ports   

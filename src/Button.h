@@ -27,7 +27,7 @@
 #include <Arduino.h>
 
 
-namespace ButtonMatrix
+namespace RSys
 {
     /**
         @brief Representation of a button.

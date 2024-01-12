@@ -24,7 +24,7 @@
 #include "Button.h"
 
 
-namespace ButtonMatrix
+namespace RSys
 {    
 
     // ------

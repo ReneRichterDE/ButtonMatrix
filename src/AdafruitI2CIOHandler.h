@@ -29,7 +29,7 @@
 #include <IOHandlerItf.h>
 
 
-namespace ButtonMatrix
+namespace RSys
 { 
     /**
         @brief  Helper to create an io handler instance

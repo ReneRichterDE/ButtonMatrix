@@ -1,7 +1,7 @@
 {
 	"name": "ButtonMatrix",
 	"version": "1.0.0",
-	"keywords": "button, keypad, matrix, buttonmatrix",
+	"keywords": "button, keypad, matrix, buttonmatrix, keyboard, debouncing",
 	"description": "Arduino/ESP Library to simplify working with keypads either directly connected to the controller IO or via external IO i.e. through I2C",
 	"homepage": "https://github.com/ReneRichterDE/ButtonMatrix",
 	"repository": {

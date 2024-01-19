@@ -44,6 +44,14 @@ namespace RSys
     {
     public:
 
+        enum buttonEvent
+        {
+            fell,
+            rose,
+            click,
+            long_click
+        };
+
         /**
             @brief  c'tor
             @param  buttons

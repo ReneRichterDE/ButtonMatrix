@@ -41,7 +41,8 @@ namespace RSys
         m_ioItf(ioItf),
         m_scanInterval(s_defaultScanInterval),
         m_lastScan(0),
-        m_numButtons(numRows * numCols)
+        m_numButtons(numRows * numCols),
+        m_buttonEventCallback(NULL)
 
     {
 
@@ -134,6 +135,13 @@ namespace RSys
     //-----------------------------------------------------------------------------
     {
         return m_numButtons;
+    }
+
+
+    void ButtonMatrix::registerButtonEventCallback(buttonEventFnc cb)
+    //-----------------------------------------------------------------------------
+    {
+        m_buttonEventCallback = cb;
     }
 
 

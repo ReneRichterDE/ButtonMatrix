@@ -52,6 +52,8 @@ namespace RSys
             long_click
         };
 
+        typedef void (*buttonEventFnc)(Button&, buttonEvent);
+
         /**
             @brief  c'tor
             @param  buttons
@@ -113,6 +115,9 @@ namespace RSys
         */ 
         uint16_t getNumButtons() const;
 
+
+        void registerButtonEventCallback(buttonEventFnc cb);
+
     protected:
 
         /**
@@ -139,6 +144,8 @@ namespace RSys
         unsigned long   m_lastScan;     /** Timestamp (millis) of the last scan */
 
         const uint16_t  m_numButtons;   /** Total number of button. Just to avoid recurring calculations */
+
+        buttonEventFnc m_buttonEventCallback; 
 
         static const uint16_t s_defaultScanInterval = 20; /** Default scan interval in ms */
     };

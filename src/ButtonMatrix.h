@@ -44,15 +44,31 @@ namespace RSys
     {
     public:
 
-        enum buttonEvent
+        /**
+            @brief Type representing button actions
+        */
+        enum ButtonAction
         {
-            fell,
-            rose,
-            click,
-            long_click
+            click,          /** Button has been click (notified when button is released) */
+            double_click,   /** not yet implemented */
+            long_press      /** Button has been pressed long */
         };
 
-        typedef void (*buttonEventFnc)(Button&, buttonEvent);
+        /**
+            @brief  Button action event callback type
+            @param  Button&
+                    Reference to the button
+            @param  ButtonAction
+                    Action that has been performed
+        */
+        typedef void (*btnActionFnc)(Button&, ButtonAction);
+
+        /**
+            @brief  Button state changed callback type
+            @param  Button&
+                    Reference to the button
+        */  
+        typedef void (*btnStateChangedFnc)(Button&);
 
         /**
             @brief  c'tor
@@ -115,8 +131,30 @@ namespace RSys
         */ 
         uint16_t getNumButtons() const;
 
+        /**
+            @brief  Set the duration in ms after that a long press for a particular button is detected
+            @param  ms
+                    Duration in ms
+        */
+        void setMinLongPressDuration(uint16_t ms);
 
-        void registerButtonEventCallback(buttonEventFnc cb);
+        /**
+            @brief  Register a callback funtion to get notified when a button activity has been performed
+                    Please note: Only one callback can be registered. Subsequent calls will overwrite functions
+                    previously set!
+            @param  cb
+                    Callback function
+        */
+        void registerButtonActionCallback(btnActionFnc cb);
+
+        /**
+            @brief  Register a callback funtion to get notified when a buttons state has changed
+                    Please note: Only one callback can be registered. Subsequent calls will overwrite functions
+                    previously set!
+            @param  cb
+                    Callback function
+        */        
+        void registerButtonEventCallback(btnStateChangedFnc cb);
 
     protected:
 
@@ -143,11 +181,15 @@ namespace RSys
         uint16_t        m_scanInterval; /** Scan interval in ms */
         unsigned long   m_lastScan;     /** Timestamp (millis) of the last scan */
 
+        uint16_t        m_LongPressMS;  /** Time in ms a after that a long press is determined */
+
         const uint16_t  m_numButtons;   /** Total number of button. Just to avoid recurring calculations */
 
-        buttonEventFnc m_buttonEventCallback; 
+        btnActionFnc            m_buttonActionCallback;         /** Button action callback */
+        btnStateChangedFnc      m_buttonEventCallback;          /** Button state changed callback */
 
-        static const uint16_t s_defaultScanInterval = 20; /** Default scan interval in ms */
+        static const uint16_t   s_defaultScanInterval = 20;     /** Default scan interval in ms */
+        static const uint16_t   s_defaultLongPressMS = 2000;    /** Default interval for long press is 2000 ms */
     };
 }
 

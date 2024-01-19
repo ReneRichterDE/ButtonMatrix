@@ -41,7 +41,9 @@ namespace RSys
         m_ioItf(ioItf),
         m_scanInterval(s_defaultScanInterval),
         m_lastScan(0),
+        m_LongPressMS(s_defaultLongPressMS),
         m_numButtons(numRows * numCols),
+        m_buttonActionCallback(NULL),
         m_buttonEventCallback(NULL)
 
     {
@@ -99,13 +101,35 @@ namespace RSys
                 // iterate through all rows
                 for (uint8_t row = 0; row < m_numRows; row++)
                 {
-                    Button* pBut = getButton(row, col);                    
-                    bool bChanged = pBut->UpdateState(
-                                            (m_ioItf.digitalRead(m_rowPins[row]) == LOW)
-                                            ? Button::STATE_PRESSED 
-                                            : Button::STATE_RELEASED);
-                    // we need to report back if any button has changed its state
-                    hasAnyButtonChanged = hasAnyButtonChanged || bChanged;
+                    Button* pBut = getButton(row, col);
+                    if (NULL != pBut)
+                    {
+                        Button::STATE state = (m_ioItf.digitalRead(m_rowPins[row]) == LOW)
+                                                ? Button::STATE_PRESSED 
+                                                : Button::STATE_RELEASED;
+                        bool bChanged = pBut->UpdateState(state);
+                        if (bChanged && NULL != m_buttonEventCallback)
+                        {
+                            // The state of the button has changed and a callback function is registered -> lets notify
+                            m_buttonEventCallback(*pBut);
+                        }
+                        if (NULL != m_buttonActionCallback)
+                        {
+                            if (bChanged && Button::STATE_RELEASED == state)
+                            {
+                                // Button has been released -> send a click event
+                                m_buttonActionCallback(*pBut, click);
+                            }
+                            else if (pBut->isLongPressed(m_LongPressMS))
+                            {
+                                m_buttonActionCallback(*pBut, long_press);
+                                pBut->forceReleased();
+                            }
+                        }                    
+
+                        // we need to report back if any button has changed its state
+                        hasAnyButtonChanged = hasAnyButtonChanged || bChanged;
+                    }
                 }
                 // set column pin to HIGH and INPUT again
                 // necessary to allow detection of multiple buttons pressed in the
@@ -138,7 +162,21 @@ namespace RSys
     }
 
 
-    void ButtonMatrix::registerButtonEventCallback(buttonEventFnc cb)
+    void ButtonMatrix::setMinLongPressDuration(uint16_t ms)
+    //-----------------------------------------------------------------------------
+    {
+        m_LongPressMS = ms;
+    }
+
+
+    void ButtonMatrix::registerButtonActionCallback(btnActionFnc cb)
+    //-----------------------------------------------------------------------------
+    {
+        m_buttonActionCallback = cb;
+    }
+
+
+    void ButtonMatrix::registerButtonEventCallback(btnStateChangedFnc cb)
     //-----------------------------------------------------------------------------
     {
         m_buttonEventCallback = cb;

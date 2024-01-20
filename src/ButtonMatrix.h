@@ -126,10 +126,33 @@ namespace RSys
         Button* getButton(uint16_t idx) const;
 
         /**
+            @brief  Gets the button object at the given matrix position
+            @param  row
+                    Button row (0..numRows-1)
+            @param  col
+                    Button cokumn (0..numCols-1)
+            @return Pointer to the button object at the given position
+                    or NULL if the position is out of range
+        */
+        Button* getButton(uint8_t row, uint8_t col);        
+
+        /**
             @brief  Gets the number of buttons in the matrix
             @return Number of buttons
         */ 
-        uint16_t getNumButtons() const;
+        inline uint16_t getNumButtons() const { return m_numButtons; }
+
+        /**
+            @brief  Gets the number of rows in the matrix
+            @return Number of rows
+        */ 
+        inline uint8_t getNumRows() const { return m_numRows; }
+
+        /**
+            @brief  Gets the number of columns in the matrix
+            @return Number of columns
+        */
+        inline uint8_t getNumCols() const { return m_numCols; }
 
         /**
             @brief  Set the duration in ms after that a long press for a particular button is detected
@@ -156,18 +179,6 @@ namespace RSys
         */        
         void registerButtonEventCallback(btnStateChangedFnc cb);
 
-    protected:
-
-        /**
-            @brief  Gets the button object at the given matrix position
-            @param  row
-                    Button row (0..numRows-1)
-            @param  col
-                    Button cokumn (0..numCols-1)
-            @return Pointer to the button object at the given position
-                    or NULL if the position is out of range
-        */
-        Button* getButton(uint8_t row, uint8_t col);
 
     private:
 

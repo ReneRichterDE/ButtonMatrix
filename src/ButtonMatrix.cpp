@@ -155,10 +155,17 @@ namespace RSys
     }
 
 
-    uint16_t ButtonMatrix::getNumButtons() const
+    Button* ButtonMatrix::getButton(uint8_t row, uint8_t col)
     //-----------------------------------------------------------------------------
     {
-        return m_numButtons;
+        Button* pButton = NULL;
+        // make sure to only return a valid button inside the valid range
+        if (m_numRows > row && m_numCols > col)
+        {
+            pButton = &m_pButtons[row * m_numCols + col];
+        }
+
+        return pButton;
     }
 
 
@@ -180,21 +187,6 @@ namespace RSys
     //-----------------------------------------------------------------------------
     {
         m_buttonEventCallback = cb;
-    }
-
-
-
-    Button* ButtonMatrix::getButton(uint8_t row, uint8_t col)
-    //-----------------------------------------------------------------------------
-    {
-        Button* pButton = NULL;
-        // make sure to only return a valid button inside the valid range
-        if (m_numRows > row && m_numCols > col)
-        {
-            pButton = &m_pButtons[row * m_numCols + col];
-        }
-
-        return pButton;
     }
 
 }

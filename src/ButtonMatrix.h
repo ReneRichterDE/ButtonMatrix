@@ -150,6 +150,12 @@ namespace RSys
         inline uint8_t getNumCols() const { return m_numCols; }
 
         /**
+            @brief  Gets minimum duration in ms after which a long press is detected
+            @return Duration in ms
+        */
+        inline uint16_t getLongPressDuration() const { return m_LongPressMS; }
+
+        /**
             @brief  Set the duration in ms after that a long press for a particular button is detected
             @param  ms
                     Duration in ms

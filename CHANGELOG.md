@@ -7,7 +7,7 @@
 - no changes yet
 
 
-## [1.0.0] - 2024-011-11
+## [1.0.0] - 2024-01-21
 
 - initial release
 

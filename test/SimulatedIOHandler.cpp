@@ -55,7 +55,7 @@ int SimulatedIOHandler::digitalRead(uint8_t pin)
         uint8_t col = 0;
         if (getLowCol(col))
         {
-            val =  (RSys::Button::STATE_RELEASED == m_pButtonStates[row * m_numCols + col])
+            val =  (RSys::BTN_STATE_RELEASED == m_pButtonStates[row * m_numCols + col])
                     ? HIGH
                     : LOW;
         }
@@ -75,7 +75,7 @@ int SimulatedIOHandler::digitalRead(uint8_t pin)
 
 void SimulatedIOHandler::simButtonState(
                                     uint8_t row, uint8_t col,
-                                    RSys::Button::STATE state)
+                                    RSys::BTN_STATE state)
 //-----------------------------------------------------------------------------
 {
     m_pButtonStates[row * m_numCols + col] = state;
@@ -94,10 +94,10 @@ SimulatedIOHandler::SimulatedIOHandler(
     m_pButtonStates(NULL)
 {    
     m_pIoStates = new int[numCols];
-    m_pButtonStates = new RSys::Button::STATE[numRows*numCols];
+    m_pButtonStates = new RSys::BTN_STATE[numRows*numCols];
     for (uint8_t idx = 0; idx < numRows*numCols; idx++)
     {
-        m_pButtonStates[idx] = RSys::Button::STATE_RELEASED;
+        m_pButtonStates[idx] = RSys::BTN_STATE_RELEASED;
     }
 
     for (uint8_t idx = 0; idx < m_numCols; idx++)

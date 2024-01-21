@@ -87,10 +87,10 @@ void test_scan_interval()
     uint16_t scanIntervalSav = matrix.getScanInterval();
     matrix.setScanInterval(500);
 
-    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+    simIO.simButtonState(0, 0, BTN_STATE_PRESSED);
     if (matrix.update())
     {
-        simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+        simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
         delay(200);
         if (matrix.update())
         {
@@ -99,13 +99,13 @@ void test_scan_interval()
         else
         {
             delay(500);
-            simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+            simIO.simButtonState(0, 0, BTN_STATE_PRESSED);
             if (!matrix.update())
             {
                 TEST_ASSERT_MESSAGE(false, "Matrix has not updated although scan interval has elapsed!");
             }
 
-            simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+            simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
             delay(600);
             matrix.update();
         }              
@@ -127,7 +127,7 @@ void test_each_button_isolated()
     {
         for (uint8_t col = 0; col < COLS; col++)
         {
-            simIO.simButtonState(row, col, Button::STATE_PRESSED);
+            simIO.simButtonState(row, col, BTN_STATE_PRESSED);
             bool changed = matrix.update();
             TEST_ASSERT_TRUE_MESSAGE(changed, "Matrix did not signal a change");
             if (changed)
@@ -140,7 +140,7 @@ void test_each_button_isolated()
                 }
             }
 
-            simIO.simButtonState(row, col, Button::STATE_RELEASED);
+            simIO.simButtonState(row, col, BTN_STATE_RELEASED);
             changed = matrix.update();
             TEST_ASSERT_TRUE_MESSAGE(changed, "Matrix did not signal a change");
             if (changed)
@@ -167,7 +167,7 @@ void test_parallel_button_press()
     {
         for (uint8_t col = 0; col < COLS; col++)
         {
-            simIO.simButtonState(row, col, Button::STATE_PRESSED);        
+            simIO.simButtonState(row, col, BTN_STATE_PRESSED);        
         }
 
         bool changed = matrix.update();
@@ -187,7 +187,7 @@ void test_parallel_button_press()
 
         for (uint8_t col = 0; col < COLS; col++)
         {           
-            simIO.simButtonState(row, col, Button::STATE_RELEASED);
+            simIO.simButtonState(row, col, BTN_STATE_RELEASED);
         }
 
         changed = matrix.update();
@@ -213,16 +213,16 @@ void test_button_long_press()
 //-----------------------------------------------------------------------------
 {
     matrix.setMinLongPressDuration(1000);
-    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+    simIO.simButtonState(0, 0, BTN_STATE_PRESSED);
     if (matrix.update())
     {
         Button* pBut = matrix.getButton(0, 0);
         delay(200);
-        TEST_ASSERT_FALSE_MESSAGE(pBut->isLongPressed(matrix.getLongPressDuration()), "Long press deteced earlier than expected!");
+        TEST_ASSERT_FALSE_MESSAGE(pBut->isLongPressed(matrix.getLongPressDuration()), "Long press detected earlier than expected!");
         delay(810);
-        TEST_ASSERT_TRUE_MESSAGE(pBut->isLongPressed(matrix.getLongPressDuration()), "Long press not deteced!");
+        TEST_ASSERT_TRUE_MESSAGE(pBut->isLongPressed(matrix.getLongPressDuration()), "Long press not detected!");
         
-        simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+        simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
         matrix.update();
     }
     else
@@ -240,7 +240,7 @@ void test_button_state_events()
     matrix.registerButtonActionCallback(NULL);
     matrix.registerButtonStateEventCallback(event_Button_State_changed);
 
-    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+    simIO.simButtonState(0, 0, BTN_STATE_PRESSED);
     matrix.update();
 
     TEST_ASSERT_NOT_NULL_MESSAGE(
@@ -250,13 +250,13 @@ void test_button_state_events()
     if (NULL != pButton)
     {
         TEST_ASSERT_MESSAGE(
-                    Button::STATE_PRESSED == pButton->getCurState(),
+                    BTN_STATE_PRESSED == pButton->getCurState(),
                     "Button state is not PRESSED although it should!");
     }
 
 
     pButton = NULL;
-    simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+    simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
     matrix.update();
 
     TEST_ASSERT_NOT_NULL_MESSAGE(
@@ -266,7 +266,7 @@ void test_button_state_events()
     if (NULL != pButton)
     {
         TEST_ASSERT_MESSAGE(
-                    Button::STATE_RELEASED == pButton->getCurState(),
+                    BTN_STATE_RELEASED == pButton->getCurState(),
                     "Button state is not RELEASED although it should!");
     }                 
 
@@ -283,14 +283,14 @@ void test_button_action_event_click()
     matrix.registerButtonStateEventCallback(NULL);
     matrix.registerButtonActionCallback(event_Button_Action);
 
-    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+    simIO.simButtonState(0, 0, BTN_STATE_PRESSED);
     matrix.update();
 
     TEST_ASSERT_NULL_MESSAGE(
                 pButton,
                 "pButton is not NULL, but should NOT have been set by the action event handler!");   
 
-    simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+    simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
     matrix.update();
 
     TEST_ASSERT_NOT_NULL_MESSAGE(
@@ -300,7 +300,7 @@ void test_button_action_event_click()
     if (NULL != pButton)
     {
         TEST_ASSERT_MESSAGE(
-                    Button::ACTION_CLICK == pButton->getLastAction(),
+                    BTN_ACTION_CLICK == pButton->getLastAction(),
                     "Button click action not detected!");
     }
 
@@ -318,7 +318,7 @@ void test_button_action_event_longpress()
     matrix.registerButtonStateEventCallback(NULL);
     matrix.registerButtonActionCallback(event_Button_Action);
 
-    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+    simIO.simButtonState(0, 0, BTN_STATE_PRESSED);
     matrix.update();
    
     TEST_ASSERT_NULL_MESSAGE(
@@ -336,11 +336,11 @@ void test_button_action_event_longpress()
     if (NULL != pButton)
     {
         TEST_ASSERT_MESSAGE(
-                    Button::ACTION_LONG_PRESS == pButton->getLastAction(),
+                    BTN_ACTION_LONG_PRESS == pButton->getLastAction(),
                     "Button long press action not detected!");
     }
 
-    simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+    simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
     matrix.registerButtonActionCallback(NULL);
     pButton = NULL;
 }

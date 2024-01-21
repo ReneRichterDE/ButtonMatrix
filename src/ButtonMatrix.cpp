@@ -47,9 +47,7 @@ namespace RSys
         m_buttonEventCallback(NULL)
 
     {
-
     }
-
 
 
     void ButtonMatrix::setScanInterval(uint16_t scanInterval)
@@ -104,10 +102,10 @@ namespace RSys
                     Button* pBut = getButton(row, col);
                     if (NULL != pBut)
                     {
-                        Button::STATE state = (m_ioItf.digitalRead(m_rowPins[row]) == LOW)
-                                                ? Button::STATE_PRESSED 
-                                                : Button::STATE_RELEASED;
-                        bool bChanged = pBut->updateState(state);
+                        BTN_STATE state = (m_ioItf.digitalRead(m_rowPins[row]) == LOW)
+                                                ? BTN_STATE_PRESSED 
+                                                : BTN_STATE_RELEASED;
+                        bool bChanged = static_cast<ButtonBaseItf*>(pBut)->updateState(state);
                         if (bChanged && NULL != m_buttonEventCallback)
                         {
                             // The state of the button has changed and a callback function is registered -> lets notify
@@ -115,15 +113,15 @@ namespace RSys
                         }
                         if (NULL != m_buttonActionCallback)
                         {
-                            if (bChanged && Button::STATE_RELEASED == state)
+                            if (bChanged && BTN_STATE_RELEASED == state)
                             {
                                 // Button has been released -> send a click event
-                                pBut->updateAction(Button::ACTION_CLICK);
+                                pBut->updateAction(BTN_ACTION_CLICK);
                                 m_buttonActionCallback(*pBut);
                             }
                             else if (pBut->isLongPressed(m_LongPressMS))
                             {
-                                pBut->updateAction(Button::ACTION_LONG_PRESS);
+                                pBut->updateAction(BTN_ACTION_LONG_PRESS);
                                 m_buttonActionCallback(*pBut);
                             }
                         }                    

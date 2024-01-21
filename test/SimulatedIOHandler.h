@@ -49,7 +49,7 @@ public:
         @param  state
                 New button state
     */
-    void simButtonState(uint8_t row, uint8_t col, RSys::Button::STATE state);
+    void simButtonState(uint8_t row, uint8_t col, RSys::BTN_STATE state);
 
     /**
         @brief  Get the IO simulator instance (singleton)
@@ -131,5 +131,5 @@ private:
     const uint8_t   m_numCols;      /** Number of columns in the matrix */
 
     int* m_pIoStates;                       /** Array of IO states (one for each column pin) */
-    RSys::Button::STATE* m_pButtonStates;   /** Array of button state (one for each button) */
+    RSys::BTN_STATE* m_pButtonStates;   /** Array of button state (one for each button) */
 };

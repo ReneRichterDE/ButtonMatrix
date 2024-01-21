@@ -34,9 +34,9 @@ namespace RSys
     Button::Button(uint8_t number, bool bEnabled)
     //-----------------------------------------------------------------------------
     :   m_buttonNo(number),
-        m_curState(STATE_RELEASED),
-        m_prevState(STATE_UNINITIALIZED),
-        m_lastAction(ACTION_NONE),
+        m_curState(BTN_STATE_RELEASED),
+        m_prevState(BTN_STATE_UNINITIALIZED),
+        m_lastAction(BTN_ACTION_NONE),
         m_bEnabled(bEnabled),
         m_stateChangeMillis(millis()),
         m_prevStateDuration(0),
@@ -75,15 +75,15 @@ namespace RSys
 
 
 
-    Button::STATE Button::getCurState() const
+    BTN_STATE Button::getCurState() const
     //-----------------------------------------------------------------------------
     {
-        return m_bEnabled ? m_curState : STATE_RELEASED;
+        return m_bEnabled ? m_curState : BTN_STATE_RELEASED;
     }
 
 
 
-    Button::STATE Button::getPrevState() const
+    BTN_STATE Button::getPrevState() const
     //-----------------------------------------------------------------------------
     {
         return m_prevState;
@@ -94,7 +94,7 @@ namespace RSys
     //-----------------------------------------------------------------------------
     {
         // Only report pressed if button is enabled
-        return STATE_PRESSED == m_curState && m_bEnabled;
+        return BTN_STATE_PRESSED == m_curState && m_bEnabled;
     }
 
 
@@ -137,7 +137,7 @@ namespace RSys
     }
 
 
-    bool Button::updateState(const STATE newState)
+    bool Button::updateState(const BTN_STATE newState)
     //-----------------------------------------------------------------------------
     {
         // we just update if the new state differs from the current one
@@ -152,8 +152,8 @@ namespace RSys
 
             // if button is disabled we do not report a state change
             m_stateChanged = m_bEnabled;
-            m_fell = STATE_PRESSED == m_curState;
-            if (STATE_RELEASED == m_curState)
+            m_fell = BTN_STATE_PRESSED == m_curState;
+            if (BTN_STATE_RELEASED == m_curState)
             {
                 // just report rose when swallow is not set
                 m_rose = !m_swallowNextRoseEvent && !m_longPress;
@@ -168,7 +168,7 @@ namespace RSys
     }
 
 
-    void Button::updateAction(const ACTION action)
+    void Button::updateAction(const BTN_ACTION action)
     //-----------------------------------------------------------------------------
     {
         m_lastAction = action;
@@ -208,13 +208,13 @@ namespace RSys
     }
 
 
-    Button::ACTION Button::getLastAction(bool resetafter) const
+    BTN_ACTION Button::getLastAction(bool resetafter) const
     //-----------------------------------------------------------------------------
     {
-        ACTION act = m_lastAction;
+        BTN_ACTION act = m_lastAction;
         if (resetafter)
         {
-            m_lastAction = ACTION_NONE;
+            m_lastAction = BTN_ACTION_NONE;
         }
 
         return act;

@@ -25,6 +25,7 @@
 #define Button_h
 
 #include <Arduino.h>
+#include "ButtonBaseItf.h"
 
 
 namespace RSys
@@ -34,42 +35,10 @@ namespace RSys
                Used by the ButtonMatrix class, but can also be used standalone
       
     */
-    class Button
+    class Button : public ButtonBaseItf
     {
     public:
-
-        /**
-            @brief Type representing the state of a button
-        */
-        enum STATE
-        {
-            /**
-                @brief Button state is not yet initialized
-            */
-            STATE_UNINITIALIZED,
-            /**
-                @brief Button is RELEASED (not pressed)
-            */            
-            STATE_RELEASED,
-            /**
-                @brief Button is PRESSED
-            */             
-            STATE_PRESSED
-        };
-
-
-        /**
-            @brief Type representing button actions
-        */
-        enum ACTION
-        {
-            ACTION_NONE,           /** No button action */
-            ACTION_CLICK,          /** Button has been click (notified when button is released) */
-            ACTION_DOUBLE_CLICK,   /** not yet implemented */
-            ACTION_LONG_PRESS      /** Button has been pressed long */
-        };
-
-        
+       
 
         /**
             @brief  c'tor
@@ -105,13 +74,13 @@ namespace RSys
             @brief  Determines the current state of the button
             @return The buttons current state
         */ 
-        STATE getCurState() const;
+        BTN_STATE getCurState() const;
 
         /**
             @brief  Determines the previous state of the button
             @return The buttons previous state
         */         
-        STATE getPrevState() const;   
+        BTN_STATE getPrevState() const;   
 
         /**
             @brief  Determines whether or not the button is pressed
@@ -150,20 +119,13 @@ namespace RSys
         */  
         void swallowNextRoseEvent(bool bSwallow = true);
         
-        /**
-            @brief  Updates the button with a new state. 
-                    If the state is different to the current state, the change will be notified!
-                    (Left the method public to allow usage independed of the ButtonMatrix)
-            @return True, if the state has changed or false if the new state is the same as the previous
-        */     
-        bool updateState(const STATE newState);
 
         /**
             @brief  Updates the buttons last executed action 
             @param  action
                     Action executed
         */ 
-        void updateAction(const ACTION action);
+        void updateAction(const BTN_ACTION action);
 
         /**
             @brief  Determines whether or not the buttons state has changed
@@ -192,14 +154,24 @@ namespace RSys
                     If true, the last action is reset to none afterwards
             @return Action last executed
         */ 
-        ACTION getLastAction(bool resetafter = true) const;
+        BTN_ACTION getLastAction(bool resetafter = true) const;
+
+    protected:
+
+        /**
+            @brief  Updates the button with a new state. 
+                    If the state is different to the current state, the change will be notified!
+                    (Left the method public to allow usage independent of the ButtonMatrix)
+            @return True, if the state has changed or false if the new state is the same as the previous
+        */     
+        virtual bool updateState(const BTN_STATE newState);        
 
     private:
 
         uint8_t m_buttonNo;     /** The buttons number */
-        STATE   m_curState;     /** The buttons current state */
-        STATE   m_prevState;    /** The buttons previous state */
-        mutable ACTION  m_lastAction;      /** The last action executed on the button */
+        BTN_STATE   m_curState;     /** The buttons current state */
+        BTN_STATE   m_prevState;    /** The buttons previous state */
+        mutable BTN_ACTION  m_lastAction;      /** The last action executed on the button */
 
         bool m_bEnabled;                   /** Button is or isn't enabled */
 

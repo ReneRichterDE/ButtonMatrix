@@ -149,12 +149,6 @@ namespace RSys
                     and now want to revert that decision
         */  
         void swallowNextRoseEvent(bool bSwallow = true);
-
-        /**
-            @brief  Forces a button into the RELEASED state
-                    No state changed will be notified!
-        */  
-        void forceReleased();
         
         /**
             @brief  Updates the button with a new state. 

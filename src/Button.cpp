@@ -137,17 +137,6 @@ namespace RSys
     }
 
 
-    void Button::forceReleased()
-    //-----------------------------------------------------------------------------
-    {
-        // update the state to RELEASED
-        updateState(STATE_RELEASED);
-        // reset any state change flags
-        m_rose = m_fell = m_stateChanged = false;
-    }
-
-
-
     bool Button::updateState(const STATE newState)
     //-----------------------------------------------------------------------------
     {
@@ -166,12 +155,12 @@ namespace RSys
             m_fell = STATE_PRESSED == m_curState;
             if (STATE_RELEASED == m_curState)
             {
-                // Reset any long press
-                m_longPress = false;
                 // just report rose when swallow is not set
-                m_rose = !m_swallowNextRoseEvent;
+                m_rose = !m_swallowNextRoseEvent && !m_longPress;
                 // reset swallow so we can notify the next rose again
                 m_swallowNextRoseEvent = false;
+                // Reset any long press
+                m_longPress = false;
             }
         }
 

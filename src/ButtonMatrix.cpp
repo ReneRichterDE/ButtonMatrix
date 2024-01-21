@@ -124,11 +124,7 @@ namespace RSys
                             else if (pBut->isLongPressed(m_LongPressMS))
                             {
                                 pBut->updateAction(Button::ACTION_LONG_PRESS);
-                                if (m_buttonActionCallback(*pBut))
-                                {
-                                    // Only force the released when the long press had been handled
-                                    pBut->forceReleased();
-                                }
+                                m_buttonActionCallback(*pBut);
                             }
                         }                    
 

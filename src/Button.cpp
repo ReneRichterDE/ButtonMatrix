@@ -159,6 +159,9 @@ namespace RSys
                 m_rose = !m_swallowNextRoseEvent && !m_longPress;
                 // reset swallow so we can notify the next rose again
                 m_swallowNextRoseEvent = false;
+            } 
+            else if (BTN_STATE_PRESSED == m_curState)
+            {
                 // Reset any long press
                 m_longPress = false;
             }

@@ -8,7 +8,7 @@
   @author       Rene Richter
   @date         29.12.2023
   @modified     -
-
+  @copyright    (c) 2023-2024 Rene Richter
   @license      This library is free software; you can redistribute it and/or
                 modify it under the terms of the GNU Lesser General Public
                 License as published by the Free Software Foundation; version

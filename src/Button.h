@@ -212,12 +212,12 @@ namespace RSys
         unsigned long m_stateChangeMillis; /** Time a which the buttons state changed last */
         unsigned long m_prevStateDuration; /** The duration the button was in its previous state */
 
-        bool m_bSwallowNextRoseEvent;   /** Determines whether or not the next state change shall be swallowed and not be notified */
+        bool m_swallowNextRoseEvent;   /** Determines whether or not the next state change shall be swallowed and not be notified */
 
-        mutable bool m_bStateChanged;   /** Determines if the state has changed since the last state query */
-        mutable bool m_bFell;           /** Determines if the state fell recently (from RELEASED to PRESSED)*/
-        mutable bool m_bRose;           /** Determines if the state rose recently (from PRESSED to RELEASED)*/
-        mutable bool m_bLongPress;      /** Long press has been detected */
+        mutable bool m_stateChanged;   /** Determines if the state has changed since the last state query */
+        mutable bool m_fell;           /** Determines if the state fell recently (from RELEASED to PRESSED)*/
+        mutable bool m_rose;           /** Determines if the state rose recently (from PRESSED to RELEASED)*/
+        mutable bool m_longPress;      /** Long press has been detected */
     };
 
 }

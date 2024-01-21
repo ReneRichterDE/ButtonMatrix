@@ -32,7 +32,7 @@ using namespace RSys;
 
 /** Forward declarations for event handlers */
 void event_Button_State_changed(Button&);
-bool event_Button_Action(Button&);
+void event_Button_Action(Button&);
 
 
 
@@ -355,11 +355,10 @@ void event_Button_State_changed(Button& button)
 
 
 /** @brief Button action event handler */
-bool event_Button_Action(Button& button)
+void event_Button_Action(Button& button)
 //-----------------------------------------------------------------------------
 {
     pButton = &button;
-    return true;
 }
 
 

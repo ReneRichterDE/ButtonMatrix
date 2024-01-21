@@ -45,19 +45,11 @@ namespace RSys
     public:
 
         /**
-            @brief  Button action event callback type
-            @param  Button&
-                    Reference to the button
-            @return Return true if the action has been handled, else false
-        */
-        typedef bool (*btnActionFnc)(Button&);
-
-        /**
-            @brief  Button state changed callback type
+            @brief  Button event callback type
             @param  Button&
                     Reference to the button
         */  
-        typedef void (*btnStateChangedFnc)(Button&);
+        typedef void (*btnEventFnc)(Button&);
 
         /**
             @brief  c'tor
@@ -163,22 +155,22 @@ namespace RSys
         void setMinLongPressDuration(uint16_t ms);
 
         /**
-            @brief  Register a callback funtion to get notified when a button activity has been performed
+            @brief  Register a callback function to get notified when a button activity has been performed
                     Please note: Only one callback can be registered. Subsequent calls will overwrite functions
                     previously set!
             @param  cb
                     Callback function
         */
-        void registerButtonActionCallback(btnActionFnc cb);
+        void registerButtonActionCallback(btnEventFnc cb);
 
         /**
-            @brief  Register a callback funtion to get notified when a buttons state has changed
+            @brief  Register a callback function to get notified when a buttons state has changed
                     Please note: Only one callback can be registered. Subsequent calls will overwrite functions
                     previously set!
             @param  cb
                     Callback function
         */        
-        void registerButtonStateEventCallback(btnStateChangedFnc cb);
+        void registerButtonStateEventCallback(btnEventFnc cb);
 
 
     private:
@@ -197,8 +189,8 @@ namespace RSys
 
         const uint16_t  m_numButtons;   /** Total number of button. Just to avoid recurring calculations */
 
-        btnActionFnc            m_buttonActionCallback;         /** Button action callback */
-        btnStateChangedFnc      m_buttonEventCallback;          /** Button state changed callback */
+        btnEventFnc     m_buttonActionCallback; /** Button action callback */
+        btnEventFnc     m_buttonEventCallback;  /** Button state changed callback */
 
         static const uint16_t   s_defaultScanInterval = 20;     /** Default scan interval in ms */
         static const uint16_t   s_defaultLongPressMS = 2000;    /** Default interval for long press is 2000 ms */

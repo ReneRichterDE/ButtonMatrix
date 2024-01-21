@@ -175,14 +175,14 @@ namespace RSys
     }
 
 
-    void ButtonMatrix::registerButtonActionCallback(btnActionFnc cb)
+    void ButtonMatrix::registerButtonActionCallback(btnEventFnc cb)
     //-----------------------------------------------------------------------------
     {
         m_buttonActionCallback = cb;
     }
 
 
-    void ButtonMatrix::registerButtonStateEventCallback(btnStateChangedFnc cb)
+    void ButtonMatrix::registerButtonStateEventCallback(btnEventFnc cb)
     //-----------------------------------------------------------------------------
     {
         m_buttonEventCallback = cb;

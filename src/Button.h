@@ -205,18 +205,19 @@ namespace RSys
         uint8_t m_buttonNo;     /** The buttons number */
         STATE   m_curState;     /** The buttons current state */
         STATE   m_prevState;    /** The buttons previous state */
-        mutable ACTION  m_lastAction;       /** The last action executed on the button */
+        mutable ACTION  m_lastAction;      /** The last action executed on the button */
 
-        bool m_bEnabled;                    /** Button is or isn't enabled */
+        bool m_bEnabled;                   /** Button is or isn't enabled */
 
         unsigned long m_stateChangeMillis; /** Time a which the buttons state changed last */
         unsigned long m_prevStateDuration; /** The duration the button was in its previous state */
 
-        bool m_bSwallowNextRoseEvent; /** Determines whether or not the next state change shall be swallowed and not be notified */
+        bool m_bSwallowNextRoseEvent;   /** Determines whether or not the next state change shall be swallowed and not be notified */
 
-        mutable bool m_bStateChanged; /** Determines if the state has changed since the last state query */
-        mutable bool m_bFell;         /** Determines if the state fell recently (from RELEASED to PRESSED)*/
-        mutable bool m_bRose;         /** Determines if the state rose recently (from PRESSED to RELEASED)*/
+        mutable bool m_bStateChanged;   /** Determines if the state has changed since the last state query */
+        mutable bool m_bFell;           /** Determines if the state fell recently (from RELEASED to PRESSED)*/
+        mutable bool m_bRose;           /** Determines if the state rose recently (from PRESSED to RELEASED)*/
+        mutable bool m_bLongPress;      /** Long press has been detected */
     };
 
 }

@@ -93,6 +93,12 @@ namespace RSys
                 IOHandlerItf& ioItf = NativeIOHandler::getDefault());
 
         /**
+            @brief  Gets the current scan interval                    
+            @return Scan interval in ms
+        */
+        inline uint16_t getScanInterval() const { return m_scanInterval; }
+
+        /**
             @brief  Sets the interval in ms the button matrix state is queried 
                     This is used for debouncing as well as to limit CPU time usage
                     (default is 20 ms)

@@ -1,7 +1,29 @@
+/**
+  *****************************************************************************
+  Module        ButtonMatrix
+  @file         SimulatedIOHandler.cpp
+  -----------------------------------------------------------------------------
+  @brief        IO simulation handler (required for unit testing)
+  -----------------------------------------------------------------------------
+  @author       Rene Richter
+  @date         21.01.2024
+  @modified     -
+
+  @license      This library is free software; you can redistribute it and/or
+                modify it under the terms of the GNU Lesser General Public
+                License as published by the Free Software Foundation; version
+                2.1 of the License.
+
+                This library is distributed in the hope that it will be useful,
+                but WITHOUT ANY WARRANTY; without even the implied warranty of
+                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                See the GNU Lesser General Public License for more details.
+  *****************************************************************************
+*/
+
 
 #include "SimulatedIOHandler.h"
 
-#include <unity.h>
 
 
 void SimulatedIOHandler::pinMode(uint8_t pin, uint8_t mode)
@@ -25,7 +47,6 @@ void SimulatedIOHandler::digitalWrite(uint8_t pin, uint8_t val)
 int SimulatedIOHandler::digitalRead(uint8_t pin)
 //-----------------------------------------------------------------------------
 {
-    TEST_MESSAGE("digitalRead");
     int val = HIGH;
     uint8_t row = 0;
 
@@ -34,7 +55,6 @@ int SimulatedIOHandler::digitalRead(uint8_t pin)
         uint8_t col = 0;
         if (getLowCol(col))
         {
-            TEST_MESSAGE("Low detected");
             val =  (RSys::Button::STATE_RELEASED == m_pButtonStates[row * m_numCols + col])
                     ? HIGH
                     : LOW;
@@ -110,8 +130,6 @@ bool SimulatedIOHandler::getLowCol(uint8_t& col) const
         found = LOW == m_pIoStates[col];
         if (!found) col++;
     } while (!found && col < m_numCols);
-
-    TEST_ASSERT_TRUE_MESSAGE(found, "No LOW column found");
 
     return found;
 }

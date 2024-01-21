@@ -99,13 +99,14 @@ namespace RSys
                 // iterate through all rows
                 for (uint8_t row = 0; row < m_numRows; row++)
                 {
-                    Button* pBut = getButton(row, col);
+                    auto pBut = getButton(row, col);
                     if (NULL != pBut)
                     {
+                        auto pBtnItf = static_cast<ButtonBaseItf*>(pBut);
                         BTN_STATE state = (m_ioItf.digitalRead(m_rowPins[row]) == LOW)
                                                 ? BTN_STATE_PRESSED 
                                                 : BTN_STATE_RELEASED;
-                        bool bChanged = static_cast<ButtonBaseItf*>(pBut)->updateState(state);
+                        bool bChanged = pBtnItf->updateState(state);
                         if (bChanged && NULL != m_buttonEventCallback)
                         {
                             // The state of the button has changed and a callback function is registered -> lets notify
@@ -113,15 +114,15 @@ namespace RSys
                         }
                         if (NULL != m_buttonActionCallback)
                         {
-                            if (bChanged && BTN_STATE_RELEASED == state)
+                            if (bChanged && BTN_STATE_RELEASED == state && pBtnItf->doNotifyClick())
                             {
                                 // Button has been released -> send a click event
-                                pBut->updateAction(BTN_ACTION_CLICK);
+                                pBtnItf->updateAction(BTN_ACTION_CLICK);
                                 m_buttonActionCallback(*pBut);
                             }
                             else if (pBut->isLongPressed(m_LongPressMS))
                             {
-                                pBut->updateAction(BTN_ACTION_LONG_PRESS);
+                                pBtnItf->updateAction(BTN_ACTION_LONG_PRESS);
                                 m_buttonActionCallback(*pBut);
                             }
                         }                    

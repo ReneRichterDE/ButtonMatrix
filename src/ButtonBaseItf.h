@@ -70,6 +70,19 @@ namespace RSys
         */     
         virtual bool updateState(const BTN_STATE newState) = 0;
 
+        /**
+            @brief  Updates the buttons last executed action 
+            @param  action
+                    Action executed
+        */ 
+        virtual void updateAction(const BTN_ACTION action) = 0;
+
+        /**
+            @brief Determine if the click action shall be notified
+            @return True, if click action shall be notified
+        */ 
+        virtual bool doNotifyClick() = 0;
+
     };
 
 

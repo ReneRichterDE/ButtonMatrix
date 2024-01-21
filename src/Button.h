@@ -118,14 +118,7 @@ namespace RSys
                     and now want to revert that decision
         */  
         void swallowNextRoseEvent(bool bSwallow = true);
-        
-
-        /**
-            @brief  Updates the buttons last executed action 
-            @param  action
-                    Action executed
-        */ 
-        void updateAction(const BTN_ACTION action);
+             
 
         /**
             @brief  Determines whether or not the buttons state has changed
@@ -164,7 +157,20 @@ namespace RSys
                     (Left the method public to allow usage independent of the ButtonMatrix)
             @return True, if the state has changed or false if the new state is the same as the previous
         */     
-        virtual bool updateState(const BTN_STATE newState);        
+        virtual bool updateState(const BTN_STATE newState);  
+
+        /**
+            @brief  Updates the buttons last executed action 
+            @param  action
+                    Action executed
+        */ 
+        virtual void updateAction(const BTN_ACTION action);
+
+        /**
+            @brief Determine if the click action shall be notified
+            @return True, if click action shall be notified
+        */ 
+        virtual bool doNotifyClick();
 
     private:
 

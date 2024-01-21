@@ -102,9 +102,9 @@ namespace RSys
     bool Button::isLongPressed(uint16_t ms) const
     //-----------------------------------------------------------------------------
     {
-        bool longpress = !longpress && isPressed() && getCurStateDuration() >= ms;
+        m_bLongPress = !m_bLongPress && isPressed() && getCurStateDuration() >= ms;
 
-        return longpress;
+        return m_bLongPress;
     }
 
 

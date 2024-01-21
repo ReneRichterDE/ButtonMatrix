@@ -107,7 +107,7 @@ namespace RSys
                         Button::STATE state = (m_ioItf.digitalRead(m_rowPins[row]) == LOW)
                                                 ? Button::STATE_PRESSED 
                                                 : Button::STATE_RELEASED;
-                        bool bChanged = pBut->UpdateState(state);
+                        bool bChanged = pBut->updateState(state);
                         if (bChanged && NULL != m_buttonEventCallback)
                         {
                             // The state of the button has changed and a callback function is registered -> lets notify
@@ -118,12 +118,17 @@ namespace RSys
                             if (bChanged && Button::STATE_RELEASED == state)
                             {
                                 // Button has been released -> send a click event
-                                m_buttonActionCallback(*pBut, click);
+                                pBut->updateAction(Button::ACTION_CLICK);
+                                m_buttonActionCallback(*pBut);
                             }
                             else if (pBut->isLongPressed(m_LongPressMS))
                             {
-                                m_buttonActionCallback(*pBut, long_press);
-                                pBut->forceReleased();
+                                pBut->updateAction(Button::ACTION_LONG_PRESS);
+                                if (m_buttonActionCallback(*pBut))
+                                {
+                                    // Only force the released when the long press had been handled
+                                    pBut->forceReleased();
+                                }
                             }
                         }                    
 
@@ -183,7 +188,7 @@ namespace RSys
     }
 
 
-    void ButtonMatrix::registerButtonEventCallback(btnStateChangedFnc cb)
+    void ButtonMatrix::registerButtonStateEventCallback(btnStateChangedFnc cb)
     //-----------------------------------------------------------------------------
     {
         m_buttonEventCallback = cb;

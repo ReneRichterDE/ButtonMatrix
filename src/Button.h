@@ -57,6 +57,20 @@ namespace RSys
             STATE_PRESSED
         };
 
+
+        /**
+            @brief Type representing button actions
+        */
+        enum ACTION
+        {
+            ACTION_NONE,           /** No button action */
+            ACTION_CLICK,          /** Button has been click (notified when button is released) */
+            ACTION_DOUBLE_CLICK,   /** not yet implemented */
+            ACTION_LONG_PRESS      /** Button has been pressed long */
+        };
+
+        
+
         /**
             @brief  c'tor
             @param  number
@@ -143,12 +157,19 @@ namespace RSys
         void forceReleased();
         
         /**
-            @brief  Updates the buttons with a new state. 
+            @brief  Updates the button with a new state. 
                     If the state is different to the current state, the change will be notified!
                     (Left the method public to allow usage independed of the ButtonMatrix)
             @return True, if the state has changed or false if the new state is the same as the previous
         */     
-        bool UpdateState(const STATE newState);
+        bool updateState(const STATE newState);
+
+        /**
+            @brief  Updates the buttons last executed action 
+            @param  action
+                    Action executed
+        */ 
+        void updateAction(const ACTION action);
 
         /**
             @brief  Determines whether or not the buttons state has changed
@@ -171,13 +192,22 @@ namespace RSys
         */         
         bool rose() const;
 
+        /**
+            @brief  Gets the last action executed on the button
+            @param  resetafter
+                    If true, the last action is reset to none afterwards
+            @return Action last executed
+        */ 
+        ACTION getLastAction(bool resetafter = true) const;
+
     private:
 
         uint8_t m_buttonNo;     /** The buttons number */
         STATE   m_curState;     /** The buttons current state */
         STATE   m_prevState;    /** The buttons previous state */
+        mutable ACTION  m_lastAction;       /** The last action executed on the button */
 
-        bool m_bEnabled;        /** Button is or isn't enabled */
+        bool m_bEnabled;                    /** Button is or isn't enabled */
 
         unsigned long m_stateChangeMillis; /** Time a which the buttons state changed last */
         unsigned long m_prevStateDuration; /** The duration the button was in its previous state */

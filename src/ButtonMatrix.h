@@ -45,23 +45,12 @@ namespace RSys
     public:
 
         /**
-            @brief Type representing button actions
-        */
-        enum ButtonAction
-        {
-            click,          /** Button has been click (notified when button is released) */
-            double_click,   /** not yet implemented */
-            long_press      /** Button has been pressed long */
-        };
-
-        /**
             @brief  Button action event callback type
             @param  Button&
                     Reference to the button
-            @param  ButtonAction
-                    Action that has been performed
+            @return Return true if the action has been handled, else false
         */
-        typedef void (*btnActionFnc)(Button&, ButtonAction);
+        typedef bool (*btnActionFnc)(Button&);
 
         /**
             @brief  Button state changed callback type
@@ -183,7 +172,7 @@ namespace RSys
             @param  cb
                     Callback function
         */        
-        void registerButtonEventCallback(btnStateChangedFnc cb);
+        void registerButtonStateEventCallback(btnStateChangedFnc cb);
 
 
     private:

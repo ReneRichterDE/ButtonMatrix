@@ -13,11 +13,8 @@ I wanted it to be more flexible and implement a more object oriented approach.
 The interface has been slightly aligned to the Button2 library created by Lennart Hennigs.
 
 
-
-Still todo:
-
-The library currently lacks of a callback mechanism. This can be easily implemented and will be done quite soon.
-
+The library supports event based handling of button state changes and button actions like click and long press detection.
+NOTE: Double click actions are currently not supported. This will be implemented in the future though.
 
 
 ## License

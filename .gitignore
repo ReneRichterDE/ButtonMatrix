@@ -2,8 +2,6 @@
 #vscode stuff
 .vscode
 *.code-workspace
-#testing stuff
-test
 main.cpp
 #platformio proj specific
 platformio.ini

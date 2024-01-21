@@ -44,13 +44,20 @@ namespace RSys
     {
     public:
 
-        enum buttonEvent
-        {
-            fell,
-            rose,
-            click,
-            long_click
-        };
+        /**
+            @brief  Button action event callback type
+            @param  Button&
+                    Reference to the button
+            @return Return true if the action has been handled, else false
+        */
+        typedef bool (*btnActionFnc)(Button&);
+
+        /**
+            @brief  Button state changed callback type
+            @param  Button&
+                    Reference to the button
+        */  
+        typedef void (*btnStateChangedFnc)(Button&);
 
         /**
             @brief  c'tor
@@ -73,6 +80,12 @@ namespace RSys
                 Button* buttons, uint8_t* rowPins, uint8_t* colPins,
                 uint8_t numRows, uint8_t numCols,
                 IOHandlerItf& ioItf = NativeIOHandler::getDefault());
+
+        /**
+            @brief  Gets the current scan interval                    
+            @return Scan interval in ms
+        */
+        inline uint16_t getScanInterval() const { return m_scanInterval; }
 
         /**
             @brief  Sets the interval in ms the button matrix state is queried 
@@ -108,14 +121,6 @@ namespace RSys
         Button* getButton(uint16_t idx) const;
 
         /**
-            @brief  Gets the number of buttons in the matrix
-            @return Number of buttons
-        */ 
-        uint16_t getNumButtons() const;
-
-    protected:
-
-        /**
             @brief  Gets the button object at the given matrix position
             @param  row
                     Button row (0..numRows-1)
@@ -124,7 +129,57 @@ namespace RSys
             @return Pointer to the button object at the given position
                     or NULL if the position is out of range
         */
-        Button* getButton(uint8_t row, uint8_t col);
+        Button* getButton(uint8_t row, uint8_t col);        
+
+        /**
+            @brief  Gets the number of buttons in the matrix
+            @return Number of buttons
+        */ 
+        inline uint16_t getNumButtons() const { return m_numButtons; }
+
+        /**
+            @brief  Gets the number of rows in the matrix
+            @return Number of rows
+        */ 
+        inline uint8_t getNumRows() const { return m_numRows; }
+
+        /**
+            @brief  Gets the number of columns in the matrix
+            @return Number of columns
+        */
+        inline uint8_t getNumCols() const { return m_numCols; }
+
+        /**
+            @brief  Gets minimum duration in ms after which a long press is detected
+            @return Duration in ms
+        */
+        inline uint16_t getLongPressDuration() const { return m_LongPressMS; }
+
+        /**
+            @brief  Set the duration in ms after that a long press for a particular button is detected
+            @param  ms
+                    Duration in ms
+        */
+        void setMinLongPressDuration(uint16_t ms);
+
+        /**
+            @brief  Register a callback funtion to get notified when a button activity has been performed
+                    Please note: Only one callback can be registered. Subsequent calls will overwrite functions
+                    previously set!
+            @param  cb
+                    Callback function
+        */
+        void registerButtonActionCallback(btnActionFnc cb);
+
+        /**
+            @brief  Register a callback funtion to get notified when a buttons state has changed
+                    Please note: Only one callback can be registered. Subsequent calls will overwrite functions
+                    previously set!
+            @param  cb
+                    Callback function
+        */        
+        void registerButtonStateEventCallback(btnStateChangedFnc cb);
+
 
     private:
 
@@ -138,9 +193,15 @@ namespace RSys
         uint16_t        m_scanInterval; /** Scan interval in ms */
         unsigned long   m_lastScan;     /** Timestamp (millis) of the last scan */
 
+        uint16_t        m_LongPressMS;  /** Time in ms a after that a long press is determined */
+
         const uint16_t  m_numButtons;   /** Total number of button. Just to avoid recurring calculations */
 
-        static const uint16_t s_defaultScanInterval = 20; /** Default scan interval in ms */
+        btnActionFnc            m_buttonActionCallback;         /** Button action callback */
+        btnStateChangedFnc      m_buttonEventCallback;          /** Button state changed callback */
+
+        static const uint16_t   s_defaultScanInterval = 20;     /** Default scan interval in ms */
+        static const uint16_t   s_defaultLongPressMS = 2000;    /** Default interval for long press is 2000 ms */
     };
 }
 

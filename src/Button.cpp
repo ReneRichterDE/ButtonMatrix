@@ -36,6 +36,7 @@ namespace RSys
     :   m_buttonNo(number),
         m_curState(STATE_RELEASED),
         m_prevState(STATE_UNINITIALIZED),
+        m_lastAction(ACTION_NONE),
         m_bEnabled(bEnabled),
         m_stateChangeMillis(millis()),
         m_prevStateDuration(0),
@@ -131,14 +132,14 @@ namespace RSys
     //-----------------------------------------------------------------------------
     {
         // update the state to RELEASED
-        UpdateState(STATE_RELEASED);
+        updateState(STATE_RELEASED);
         // reset any state change flags
         m_bRose = m_bFell = m_bStateChanged = false;
     }
 
 
 
-    bool Button::UpdateState(const STATE newState)
+    bool Button::updateState(const STATE newState)
     //-----------------------------------------------------------------------------
     {
         // we just update when new state differs from the current one
@@ -164,6 +165,13 @@ namespace RSys
         }
 
         return m_bStateChanged;
+    }
+
+
+    void Button::updateAction(const ACTION action)
+    //-----------------------------------------------------------------------------
+    {
+        m_lastAction = action;
     }
 
 
@@ -197,6 +205,19 @@ namespace RSys
         m_bRose = false;
         m_bStateChanged = false;
         return result;
+    }
+
+
+    Button::ACTION Button::getLastAction(bool resetafter) const
+    //-----------------------------------------------------------------------------
+    {
+        ACTION act = m_lastAction;
+        if (resetafter)
+        {
+            m_lastAction = ACTION_NONE;
+        }
+
+        return act;
     }
 
 }

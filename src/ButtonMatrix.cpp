@@ -119,11 +119,7 @@ namespace RSys
                             {
                                 // Button has been released -> send a click event
                                 pBut->updateAction(Button::ACTION_CLICK);
-                                if (m_buttonActionCallback(*pBut))
-                                {
-                                    // Only reset the action when click had been handled
-                                    pBut->updateAction(Button::ACTION_NONE);
-                                }
+                                m_buttonActionCallback(*pBut);
                             }
                             else if (pBut->isLongPressed(m_LongPressMS))
                             {

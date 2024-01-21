@@ -135,8 +135,6 @@ namespace RSys
         updateState(STATE_RELEASED);
         // reset any state change flags
         m_bRose = m_bFell = m_bStateChanged = false;
-        // reset last action
-        m_lastAction = ACTION_NONE;
     }
 
 

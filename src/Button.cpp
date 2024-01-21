@@ -43,7 +43,8 @@ namespace RSys
         m_bSwallowNextRoseEvent(false),
         m_bStateChanged(false),
         m_bFell(false),
-        m_bRose(false)
+        m_bRose(false),
+        m_bLongPress(false)
     {
 
     }
@@ -101,7 +102,9 @@ namespace RSys
     bool Button::isLongPressed(uint16_t ms) const
     //-----------------------------------------------------------------------------
     {
-        return isPressed() && getCurStateDuration() >= ms;
+        bool longpress = !longpress && isPressed() && getCurStateDuration() >= ms;
+
+        return longpress;
     }
 
 
@@ -142,7 +145,7 @@ namespace RSys
     bool Button::updateState(const STATE newState)
     //-----------------------------------------------------------------------------
     {
-        // we just update when new state differs from the current one
+        // we just update if the new state differs from the current one
         if (newState != m_curState)
         {
             m_bRose = m_bFell = false;
@@ -152,11 +155,13 @@ namespace RSys
             m_prevState = m_curState;
             m_curState = newState;
 
-            // if button is disable we do not report a state change
+            // if button is disabled we do not report a state change
             m_bStateChanged = m_bEnabled;
             m_bFell = STATE_PRESSED == m_curState;
             if (STATE_RELEASED == m_curState)
             {
+                // Reset any long press
+                m_bLongPress = false;
                 // just report rose when swallow is not set
                 m_bRose = !m_bSwallowNextRoseEvent;
                 // reset swallow so we can notify the next rose again

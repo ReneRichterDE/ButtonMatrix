@@ -27,6 +27,14 @@
 #include <ButtonMatrix.h>
 #include "SimulatedIOHandler.h"
 
+using namespace RSys;
+
+
+/** Forward declarations for event handlers */
+void event_Button_State_changed(Button&);
+bool event_Button_Action(Button&);
+
+
 
 const uint8_t COLS = 3; /** Number of button matrix columns */
 const uint8_t ROWS = 3; /** Number of button matrix rows */
@@ -36,7 +44,7 @@ uint8_t rowPins[ROWS] = {0,1,2}; /** Button matrix row pins */
 
 
 /** @brief Button matrix button definitons */
-RSys::Button buttons[ROWS][COLS] =
+Button buttons[ROWS][COLS] =
 {
     { (1), (2), (3) },
     { (4), (5), (6) },
@@ -47,7 +55,13 @@ RSys::Button buttons[ROWS][COLS] =
 SimulatedIOHandler& simIO = SimulatedIOHandler::getInstance(rowPins, colPins, ROWS, COLS);
 
 /** @brief Button matrix */
-RSys::ButtonMatrix matrix((RSys::Button*)buttons, rowPins, colPins, ROWS, COLS, simIO);
+ButtonMatrix matrix((Button*)buttons, rowPins, colPins, ROWS, COLS, simIO);
+
+
+/** Global button pointer for event testing */
+Button* pButton = NULL;   
+
+
 
 /** @brief Runs before each test */
 void setUp()
@@ -73,10 +87,10 @@ void test_scan_interval()
     uint16_t scanIntervalSav = matrix.getScanInterval();
     matrix.setScanInterval(500);
 
-    simIO.simButtonState(0, 0, RSys::Button::STATE_PRESSED);
+    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
     if (matrix.update())
     {
-        simIO.simButtonState(0, 0, RSys::Button::STATE_RELEASED);
+        simIO.simButtonState(0, 0, Button::STATE_RELEASED);
         delay(200);
         if (matrix.update())
         {
@@ -85,13 +99,13 @@ void test_scan_interval()
         else
         {
             delay(500);
-            simIO.simButtonState(0, 0, RSys::Button::STATE_PRESSED);
+            simIO.simButtonState(0, 0, Button::STATE_PRESSED);
             if (!matrix.update())
             {
                 TEST_ASSERT_MESSAGE(false, "Matrix has not updated although scan interval has elapsed!");
             }
 
-            simIO.simButtonState(0, 0, RSys::Button::STATE_RELEASED);
+            simIO.simButtonState(0, 0, Button::STATE_RELEASED);
             delay(600);
             matrix.update();
         }              
@@ -100,8 +114,6 @@ void test_scan_interval()
     {
         TEST_ASSERT_MESSAGE(false, "Matrix not updated although it should!");
     }
-
-
 
     matrix.setScanInterval(scanIntervalSav);
 }
@@ -115,12 +127,12 @@ void test_each_button_isolated()
     {
         for (uint8_t col = 0; col < COLS; col++)
         {
-            simIO.simButtonState(row, col, RSys::Button::STATE_PRESSED);
+            simIO.simButtonState(row, col, Button::STATE_PRESSED);
             bool changed = matrix.update();
             TEST_ASSERT_TRUE_MESSAGE(changed, "Matrix did not signal a change");
             if (changed)
             {
-                RSys::Button* pBut = matrix.getButton(row, col);
+                Button* pBut = matrix.getButton(row, col);
                 TEST_ASSERT_NOT_NULL_MESSAGE(pBut, "Button pointer is NULL!");
                 if (NULL != pBut)
                 {
@@ -128,12 +140,12 @@ void test_each_button_isolated()
                 }
             }
 
-            simIO.simButtonState(row, col, RSys::Button::STATE_RELEASED);
+            simIO.simButtonState(row, col, Button::STATE_RELEASED);
             changed = matrix.update();
             TEST_ASSERT_TRUE_MESSAGE(changed, "Matrix did not signal a change");
             if (changed)
             {
-                RSys::Button* pBut = matrix.getButton(row, col);
+                Button* pBut = matrix.getButton(row, col);
                 TEST_ASSERT_NOT_NULL_MESSAGE(pBut, "Button pointer is NULL!");
                 if (NULL != pBut)
                 {
@@ -155,7 +167,7 @@ void test_parallel_button_press()
     {
         for (uint8_t col = 0; col < COLS; col++)
         {
-            simIO.simButtonState(row, col, RSys::Button::STATE_PRESSED);        
+            simIO.simButtonState(row, col, Button::STATE_PRESSED);        
         }
 
         bool changed = matrix.update();
@@ -164,7 +176,7 @@ void test_parallel_button_press()
         {
             for (uint8_t col = 0; col < COLS; col++)
             {     
-                RSys::Button* pBut = matrix.getButton(row, col);
+                Button* pBut = matrix.getButton(row, col);
                 TEST_ASSERT_NOT_NULL_MESSAGE(pBut, "Button pointer is NULL!");
                 if (NULL != pBut)
                 {
@@ -175,7 +187,7 @@ void test_parallel_button_press()
 
         for (uint8_t col = 0; col < COLS; col++)
         {           
-            simIO.simButtonState(row, col, RSys::Button::STATE_RELEASED);
+            simIO.simButtonState(row, col, Button::STATE_RELEASED);
         }
 
         changed = matrix.update();
@@ -184,7 +196,7 @@ void test_parallel_button_press()
         {
             for (uint8_t col = 0; col < COLS; col++)
             {               
-                RSys::Button* pBut = matrix.getButton(row, col);
+                Button* pBut = matrix.getButton(row, col);
                 TEST_ASSERT_NOT_NULL_MESSAGE(pBut, "Button pointer is NULL!");
                 if (NULL != pBut)
                 {
@@ -200,22 +212,154 @@ void test_parallel_button_press()
 void test_button_long_press()
 //-----------------------------------------------------------------------------
 {
-    simIO.simButtonState(0, 0, RSys::Button::STATE_PRESSED);
+    matrix.setMinLongPressDuration(1000);
+    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
     if (matrix.update())
     {
-        RSys::Button* pBut = matrix.getButton(0, 0);
+        Button* pBut = matrix.getButton(0, 0);
         delay(200);
-        TEST_ASSERT_FALSE_MESSAGE(pBut->isLongPressed(1000), "Long press deteced earlier than expected!");
+        TEST_ASSERT_FALSE_MESSAGE(pBut->isLongPressed(matrix.getLongPressDuration()), "Long press deteced earlier than expected!");
         delay(810);
-        TEST_ASSERT_TRUE_MESSAGE(pBut->isLongPressed(1000), "Long press not deteced!");
+        TEST_ASSERT_TRUE_MESSAGE(pBut->isLongPressed(matrix.getLongPressDuration()), "Long press not deteced!");
         
-        simIO.simButtonState(0, 0, RSys::Button::STATE_RELEASED);
+        simIO.simButtonState(0, 0, Button::STATE_RELEASED);
         matrix.update();
     }
     else
     {
         TEST_ASSERT_MESSAGE(false, "Matrix not updated although it should!");
     }
+}
+
+
+/** @brief Test if button state change events work properly */
+void test_button_state_events()
+//-----------------------------------------------------------------------------
+{
+    pButton = NULL;
+    matrix.registerButtonActionCallback(NULL);
+    matrix.registerButtonStateEventCallback(event_Button_State_changed);
+
+    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+    matrix.update();
+
+    TEST_ASSERT_NOT_NULL_MESSAGE(
+                pButton,
+                "pButton is NULL, but should have been set by the state changed event handler!");
+
+    if (NULL != pButton)
+    {
+        TEST_ASSERT_MESSAGE(
+                    Button::STATE_PRESSED == pButton->getCurState(),
+                    "Button state is not PRESSED although it should!");
+    }
+
+
+    pButton = NULL;
+    simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+    matrix.update();
+
+    TEST_ASSERT_NOT_NULL_MESSAGE(
+                pButton,
+                "pButton is NULL, but should have been set by the state changed event handler!");   
+
+    if (NULL != pButton)
+    {
+        TEST_ASSERT_MESSAGE(
+                    Button::STATE_RELEASED == pButton->getCurState(),
+                    "Button state is not RELEASED although it should!");
+    }                 
+
+    matrix.registerButtonStateEventCallback(NULL);
+    pButton = NULL;
+}
+
+
+/** @brief Test if button click action is detected and notified properly */
+void test_button_action_event_click()
+//-----------------------------------------------------------------------------
+{
+    pButton = NULL;
+    matrix.registerButtonStateEventCallback(NULL);
+    matrix.registerButtonActionCallback(event_Button_Action);
+
+    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+    matrix.update();
+
+    TEST_ASSERT_NULL_MESSAGE(
+                pButton,
+                "pButton is not NULL, but should NOT have been set by the action event handler!");   
+
+    simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+    matrix.update();
+
+    TEST_ASSERT_NOT_NULL_MESSAGE(
+                pButton,
+                "pButton is NULL, but should have been set by the action event handler!");   
+
+    if (NULL != pButton)
+    {
+        TEST_ASSERT_MESSAGE(
+                    Button::ACTION_CLICK == pButton->getLastAction(),
+                    "Button click action not detected!");
+    }
+
+    matrix.registerButtonActionCallback(NULL);
+    pButton = NULL;
+}
+
+
+/** @brief Test if button long press action is detected and notified properly */
+void test_button_action_event_longpress()
+//-----------------------------------------------------------------------------
+{
+    pButton = NULL;
+    matrix.setMinLongPressDuration(600);
+    matrix.registerButtonStateEventCallback(NULL);
+    matrix.registerButtonActionCallback(event_Button_Action);
+
+    simIO.simButtonState(0, 0, Button::STATE_PRESSED);
+    matrix.update();
+   
+    TEST_ASSERT_NULL_MESSAGE(
+                pButton,
+                "pButton is not NULL, but should NOT have been set by the action event handler!");   
+
+    delay(matrix.getLongPressDuration());
+    
+    matrix.update();
+
+    TEST_ASSERT_NOT_NULL_MESSAGE(
+                pButton,
+                "pButton is NULL, but should have been set by the action event handler!");   
+
+    if (NULL != pButton)
+    {
+        TEST_ASSERT_MESSAGE(
+                    Button::ACTION_LONG_PRESS == pButton->getLastAction(),
+                    "Button long press action not detected!");
+    }
+
+    simIO.simButtonState(0, 0, Button::STATE_RELEASED);
+    matrix.registerButtonActionCallback(NULL);
+    pButton = NULL;
+}
+
+
+/** @brief Button state changed event handler */
+void event_Button_State_changed(Button& button)
+//-----------------------------------------------------------------------------
+{
+    pButton = &button;
+}
+
+
+/** @brief Button action event handler */
+bool event_Button_Action(Button& button)
+//-----------------------------------------------------------------------------
+{
+    pButton = &button;
+    return true;
 }
 
 
@@ -229,10 +373,16 @@ void setup()
     delay(2000); // service delay
     UNITY_BEGIN();
 
+    // Standard function tests
     RUN_TEST(test_scan_interval);
     RUN_TEST(test_each_button_isolated);
     RUN_TEST(test_parallel_button_press);
     RUN_TEST(test_button_long_press);
+
+    // Eventing tests
+    RUN_TEST(test_button_state_events);
+    RUN_TEST(test_button_action_event_click);
+    RUN_TEST(test_button_action_event_longpress);
 
     UNITY_END(); // stop unit testing
 }

@@ -10,6 +10,7 @@
 	},
 	"authors": {
 		"name": "Rene Richter",
+        "email": "mail@bebbanburg.de",
 		"url": "https://github.com/ReneRichterDE"
 	},
 	"frameworks": "arduino",

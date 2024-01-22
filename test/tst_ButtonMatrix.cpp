@@ -348,7 +348,7 @@ void test_button_action_event_longpress()
                 pButton,
                 "pButton is not NULL, but should NOT have been set by the action event handler!");   
 
-    delay(matrix.getLongPressDuration());
+    delay(matrix.getLongPressDuration()+10);
     
     matrix.update();
 
@@ -386,7 +386,7 @@ void test_button_action_skipped_event_after_longpress()
                 pButton,
                 "pButton is not NULL, but should NOT have been set by the action event handler!");   
 
-    delay(matrix.getLongPressDuration());
+    delay(matrix.getLongPressDuration()+10);
     
     matrix.update();
 

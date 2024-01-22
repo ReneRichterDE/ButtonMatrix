@@ -232,6 +232,29 @@ void test_button_long_press()
 }
 
 
+/** @brief Test if long press detection works properly */
+void test_skipped_rose_after_button_long_press()
+//-----------------------------------------------------------------------------
+{
+    matrix.setMinLongPressDuration(500);
+    simIO.simButtonState(0, 0, BTN_STATE_PRESSED);
+    if (matrix.update())
+    {
+        Button* pBut = matrix.getButton(0, 0);
+        delay(510);
+        TEST_ASSERT_TRUE_MESSAGE(pBut->isLongPressed(matrix.getLongPressDuration()), "Long press not detected!");        
+        
+        simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
+        matrix.update();
+        TEST_ASSERT_FALSE_MESSAGE(pBut->rose(), "rose was notified after long press. Shouldn't be the case!");        
+    }
+    else
+    {
+        TEST_ASSERT_MESSAGE(false, "Matrix not updated although it should!");
+    }
+}
+
+
 /** @brief Test if button state change events work properly */
 void test_button_state_events()
 //-----------------------------------------------------------------------------
@@ -341,6 +364,51 @@ void test_button_action_event_longpress()
     }
 
     simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
+    matrix.update();
+    matrix.registerButtonActionCallback(NULL);
+    pButton = NULL;
+}
+
+
+/** @brief Test if button long press action is detected and notified properly */
+void test_button_action_skipped_event_after_longpress()
+//-----------------------------------------------------------------------------
+{
+    pButton = NULL;
+    matrix.setMinLongPressDuration(500);
+    matrix.registerButtonStateEventCallback(NULL);
+    matrix.registerButtonActionCallback(event_Button_Action);
+
+    simIO.simButtonState(0, 0, BTN_STATE_PRESSED);
+    matrix.update();
+   
+    TEST_ASSERT_NULL_MESSAGE(
+                pButton,
+                "pButton is not NULL, but should NOT have been set by the action event handler!");   
+
+    delay(matrix.getLongPressDuration());
+    
+    matrix.update();
+
+    TEST_ASSERT_NOT_NULL_MESSAGE(
+                pButton,
+                "pButton is NULL, but should have been set by the action event handler!");   
+
+    if (NULL != pButton)
+    {
+        TEST_ASSERT_MESSAGE(
+                    BTN_ACTION_LONG_PRESS == pButton->getLastAction(),
+                    "Button long press action not detected!");
+    }
+
+    pButton = NULL;
+    simIO.simButtonState(0, 0, BTN_STATE_RELEASED);
+    matrix.update();
+    TEST_ASSERT_NULL_MESSAGE(
+                    pButton,
+                    "After long press and releasing the button, there shouldn't be a notification for CLICK!");
+
+
     matrix.registerButtonActionCallback(NULL);
     pButton = NULL;
 }
@@ -377,11 +445,13 @@ void setup()
     RUN_TEST(test_each_button_isolated);
     RUN_TEST(test_parallel_button_press);
     RUN_TEST(test_button_long_press);
-
+    RUN_TEST(test_skipped_rose_after_button_long_press);
+    
     // Eventing tests
     RUN_TEST(test_button_state_events);
     RUN_TEST(test_button_action_event_click);
     RUN_TEST(test_button_action_event_longpress);
+    RUN_TEST(test_button_action_skipped_event_after_longpress);
 
     UNITY_END(); // stop unit testing
 }

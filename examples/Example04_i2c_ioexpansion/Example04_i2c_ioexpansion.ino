@@ -89,7 +89,7 @@ Button buttons[ROWS][COLS] = {
 };
 
 // Note that we have to tell the ButtonMatrix to use the i2c io handler now (last c'tor param)
-ButtonMatrix matrix((Button*)buttons, rowPins, colPins, ROWS, COLS, ButtonMatrix::ADFI2C(mcp));
+ButtonMatrix matrix((Button*)buttons, rowPins, colPins, ROWS, COLS, ADFI2C(mcp));
 
 
 void setup()

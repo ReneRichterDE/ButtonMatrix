@@ -99,7 +99,7 @@ void loop()
             if (pButton->isPressed())
             {
                 // Button is pressed
-               Serial.printf("Button %d is pressed\n", pButton->getNumber());
+               Serial.print("Button pressed: ");Serial.println(pButton->getNumber());
 
                // For a more sophisticated example see Example02_fell_rose_lp example!
             }             

@@ -81,12 +81,12 @@ void event_Button_State_changed(Button& button)
     if (button.fell())      
     {
         // Button has rose. The fell() method automatically resets the event so you cannot call it twice for the same occurrence of the event!                 
-        Serial.printf("Button %d fell\n", button.getNumber());
+        Serial.print("Button fell "); Serial.println(button.getNumber());
     }
     else if (button.rose())
     {
         // Button has rose. The rose() method automatically resets the event so you cannot call it twice for the same occurrence of the event! 
-        Serial.printf("Button %d rose\n", button.getNumber());
+        Serial.print("Button rose "); Serial.println(button.getNumber());
     }  
 }
 
@@ -99,16 +99,16 @@ void event_Button_Action(Button& button)
     {
         case BTN_ACTION_CLICK:
             // Button has been clicked
-        Serial.printf("Button %d click\n", button.getNumber());
+            Serial.print("Button click "); Serial.println(button.getNumber());
             break;
 
         case BTN_ACTION_LONG_PRESS:
             // Button is pressed long 
-            Serial.printf("Button %d long pressed\n", button.getNumber());
+            Serial.print("Button long pressed "); Serial.println(button.getNumber());
             break;
 
         default:
-            Serial.printf("Ooops ... strange event for button %d\n", button.getNumber());
+            Serial.print("Ooops ... strange event for button "); Serial.println(button.getNumber());
             break;
     }
 }

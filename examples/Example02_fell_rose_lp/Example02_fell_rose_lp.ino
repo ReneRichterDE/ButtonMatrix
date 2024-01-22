@@ -101,12 +101,12 @@ void loop()
             if (pButton->fell())      
             {
                 // Button has rose. The fell() method automatically resets the event so you cannot call it twice for the same occurrence of the event!                 
-               Serial.printf("Button %d fell\n", pButton->getNumber());
+               Serial.print("Button fell ");Serial.println(pButton->getNumber());
             }
             else if (pButton->rose())
             {
                 // Button has rose. The rose() method automatically resets the event so you cannot call it twice for the same occurrence of the event! 
-                Serial.printf("Button %d rose\n", pButton->getNumber());
+                Serial.print("Button rose ");Serial.println(pButton->getNumber());
             }               
         }
     }
@@ -120,7 +120,7 @@ void loop()
         if (pButton->isLongPressed(longPressDuration))
         {
             // Button is pressed long 
-            Serial.printf("Button %d is long pressed\n", pButton->getNumber());    
+            Serial.print("Button long pressed ");Serial.println(pButton->getNumber());
 
             // Note: After long press detection, you won't get a rose event by intention when button is being released!
         }

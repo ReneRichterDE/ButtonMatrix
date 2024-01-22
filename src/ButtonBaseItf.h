@@ -21,12 +21,13 @@
   *****************************************************************************
 */
 
+
 namespace RSys
 {
         /**
             @brief Type representing the state of a button
         */
-        enum BTN_STATE
+        enum BTN_STATE : unsigned char
         {
             /**
                 @brief Button state is not yet initialized
@@ -46,7 +47,7 @@ namespace RSys
         /**
             @brief Type representing button actions
         */
-        enum BTN_ACTION
+        enum BTN_ACTION : unsigned char
         {
             BTN_ACTION_NONE,           /** No button action */
             BTN_ACTION_CLICK,          /** Button has been click (notified when button is released) */

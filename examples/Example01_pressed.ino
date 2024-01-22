@@ -1,7 +1,7 @@
 /**
   *****************************************************************************
   Module        ButtonMatrix
-  @file         Example01_pressed.cpp
+  @file         Example01_pressed.ino
   -----------------------------------------------------------------------------
   @brief        Example showing absolute basic button matrix usage of the
                 isPressed() method.

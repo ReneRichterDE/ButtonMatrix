@@ -1,10 +1,10 @@
 /**
   *****************************************************************************
   Module        ButtonMatrix
-  @file         Example03_events.cpp
+  @file         Example03_events.ino
   -----------------------------------------------------------------------------
-  @brief        Example showing basic button matrix usage with
-                the rose(), fell() and isLongPress(..) methods of a button
+  @brief        Example showing basic button matrix usage with events instead
+                of polling states and transitions
   -----------------------------------------------------------------------------
   @author       Rene Richter
   @date         21.01.2024
@@ -25,15 +25,17 @@
 /**
  * What you need to do to work with ButtonMatrix:
  * 
- * 1. Add the library to your project
- * 2. Include the header file in main.ino/main.cpp (or wherever you need it)
- * 3. Either a "using namespace RSys;" or just prefix all ButtonMatrix types with "RSys::" (i.e. "RSys::Button")
- * 4. Define the column pins
- * 5. Define the row pins
- * 6. Define your buttons
- * 7. Create an instance of the ButtonMatrix passing the information of steps 4. to 6.
- * 8. Make sure to call the init() method in setup()
- * 9. Place a call to the update() method in loop() always before dealing with the state of the buttons
+ *  1. Add the library to your project
+ *  2. Include the header file in main.ino/main.cpp (or wherever you need it)
+ *  3. Either add "using namespace RSys;" or just prefix all ButtonMatrix types with "RSys::" (i.e. "RSys::Button")
+ *  4. Define the column pins
+ *  5. Define the row pins
+ *  6. Define your buttons
+ *  7. Create an instance of the ButtonMatrix passing the information of steps 4. to 6.
+ *  8. Write callback functions as per interface definition
+ *  9. Make sure to call the init() method in setup()
+ * 10. Register the callback functions in setup()
+ * 11. Place a call to the update() method in loop() always before dealing with the state of the buttons
  */
 
 

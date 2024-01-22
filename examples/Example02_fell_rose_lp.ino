@@ -1,7 +1,7 @@
 /**
   *****************************************************************************
   Module        ButtonMatrix
-  @file         Example02_fell_rose.cpp
+  @file         Example02_fell_rose.ino
   -----------------------------------------------------------------------------
   @brief        Example showing basic button matrix usage with
                 the rose(), fell() and isLongPress(..) methods of a button
@@ -27,7 +27,7 @@
  * 
  * 1. Add the library to your project
  * 2. Include the header file in main.ino/main.cpp (or wherever you need it)
- * 3. Either a "using namespace RSys;" or just prefix all ButtonMatrix types with "RSys::" (i.e. "RSys::Button")
+ * 3. Either add "using namespace RSys;" or just prefix all ButtonMatrix types with "RSys::" (i.e. "RSys::Button")
  * 4. Define the column pins
  * 5. Define the row pins
  * 6. Define your buttons

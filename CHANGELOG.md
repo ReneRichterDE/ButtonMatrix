@@ -6,6 +6,12 @@
 
 - no changes yet
 
+## [1.0.1] - 2024-01-23
+
+- Changed pin numbers in examples to match the Arduino Nano
+- Name of the library is now the same for the Arduino IDE as well as for PlatformIO
+- Removed nonexisting main.cpp reference from .gitignore
+
 
 ## [1.0.0] - 2024-01-21
 

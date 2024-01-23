@@ -49,10 +49,10 @@ namespace RSys
         */
         enum BTN_ACTION : unsigned char
         {
-            BTN_ACTION_NONE,           /** No button action */
-            BTN_ACTION_CLICK,          /** Button has been click (notified when button is released) */
-            BTN_ACTION_DBL_CLICK,   /** not yet implemented */
-            BTN_ACTION_LONG_PRESS      /** Button has been pressed long */
+            BTN_ACTION_NONE       = 0,   /** No button action */
+            BTN_ACTION_CLICK      = 1,   /** Button has been click (notified when button is released) */
+            //BTN_ACTION_DBL_CLICK  = 2,   --> not yet implemented
+            BTN_ACTION_LONG_PRESS = 3    /** Button has been pressed long */
         };
 
     /**

@@ -6,13 +6,15 @@
 	"homepage": "https://github.com/ReneRichterDE/ButtonMatrix",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ReneRichterDE/ButtonMatrix"
+		"url": "https://github.com/ReneRichterDE/ButtonMatrix.git"
 	},
 	"authors": {
 		"name": "Rene Richter",
         "email": "mail@bebbanburg.de",
-		"url": "https://github.com/ReneRichterDE"
+		"url": "https://github.com/ReneRichterDE",
+        "maintainer": true
 	},
+    "license": "LGPL-2.1-or-later",
 	"frameworks": "arduino",
 	"platforms": "*"
 }

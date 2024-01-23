@@ -2,7 +2,6 @@
 #vscode stuff
 .vscode
 *.code-workspace
-main.cpp
 #platformio proj specific
 platformio.ini
 

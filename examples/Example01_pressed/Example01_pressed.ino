@@ -56,11 +56,11 @@ static const uint32_t c_uiMonitorBaud = 115200; // USB monitoring baud rate
 const uint8_t COLS = 3; /** Number of button matrix columns */
 const uint8_t ROWS = 3; /** Number of button matrix rows */
 
-uint8_t colPins[COLS] = {27, 14, 12}; /** Button matrix column pins */
-uint8_t rowPins[ROWS] = {32, 33, 25}; /** Button matrix row pins */
+uint8_t colPins[COLS] = {7,8,9}; /** Button matrix column pins */
+uint8_t rowPins[ROWS] = {4,5,6}; /** Button matrix row pins */
 
 /** Button matrix button definitons */
-Button buttons[ROWS][COLS] = {
+RSys::Button buttons[ROWS][COLS] = {
     { (1), (2), (3) },
     { (4), (5), (6) },
     { (7), (8), (9) }

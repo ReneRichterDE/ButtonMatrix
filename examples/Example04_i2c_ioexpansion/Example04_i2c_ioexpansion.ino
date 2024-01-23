@@ -78,11 +78,12 @@ const uint16_t longPressDuration = 1000; /** Minimum duration of a long press */
 const uint8_t COLS = 3; /** Number of button matrix columns */
 const uint8_t ROWS = 3; /** Number of button matrix rows */
 
-uint8_t colPins[COLS] = {27, 14, 12}; /** Button matrix column pins */
-uint8_t rowPins[ROWS] = {32, 33, 25}; /** Button matrix row pins */
+uint8_t colPins[COLS] = {4,5,6}; /** Button matrix column pins */
+uint8_t rowPins[ROWS] = {0,1,2}; /** Button matrix row pins */
+
 
 /** Button matrix button definitons */
-Button buttons[ROWS][COLS] = {
+ButtonMatrix::Button buttons[ROWS][COLS] = {
     { (1), (2), (3) },
     { (4), (5), (6) },
     { (7), (8), (9) }

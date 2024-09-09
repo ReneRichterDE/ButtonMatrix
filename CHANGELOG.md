@@ -4,7 +4,8 @@
 
 ## Unreleased
 
-- no changes yet
+- Fixed declaration of Button array in Example04_i2c_ioexpansion.ino
+- Added preprocessor statements to ButtonBaseItf.h to avoid duplicate definition of data types
 
 ## [1.0.1] - 2024-01-23
 

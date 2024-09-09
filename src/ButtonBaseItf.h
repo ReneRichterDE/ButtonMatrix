@@ -21,6 +21,9 @@
   *****************************************************************************
 */
 
+#ifndef ButtonBaseItf_h
+#define ButtonBaseItf_h
+
 
 namespace RSys
 {
@@ -35,11 +38,11 @@ namespace RSys
             BTN_STATE_UNINITIALIZED,
             /**
                 @brief Button is RELEASED (not pressed)
-            */            
+            */
             BTN_STATE_RELEASED,
             /**
                 @brief Button is PRESSED
-            */             
+            */
             BTN_STATE_PRESSED
         };
 
@@ -57,34 +60,37 @@ namespace RSys
 
     /**
         @brief Button base interface
-      
+
     */
     class ButtonBaseItf
     {
     public:
 
         /**
-            @brief  Updates the button with a new state. 
+            @brief  Updates the button with a new state.
                     If the state is different to the current state, the change will be notified!
                     (Left the method public to allow usage independent of the ButtonMatrix)
             @return True, if the state has changed or false if the new state is the same as the previous
-        */     
+        */
         virtual bool updateState(const BTN_STATE newState) = 0;
 
         /**
-            @brief  Updates the buttons last executed action 
+            @brief  Updates the buttons last executed action
             @param  action
                     Action executed
-        */ 
+        */
         virtual void updateAction(const BTN_ACTION action) = 0;
 
         /**
             @brief Determine if the click action shall be notified
             @return True, if click action shall be notified
-        */ 
+        */
         virtual bool doNotifyClick() = 0;
 
     };
 
 
 }
+
+
+#endif // ButtonBaseItf_h

@@ -2,7 +2,7 @@
 
 **Note:** Unreleased changes are checked in but not part of an official release (available through the Arduino IDE or PlatfomIO) yet. This allows you to test WiP features and give feedback to them.
 
-## Unreleased
+## [1.0.2] - 2024-09-09
 
 - Fixed declaration of Button array in Example04_i2c_ioexpansion.ino
 - Added preprocessor statements to ButtonBaseItf.h to avoid duplicate definition of data types

@@ -24,7 +24,7 @@
 
 /**
  * What you need to do to work with ButtonMatrix:
- * 
+ *
  * 1. Add the library to your project
  * 2. Include the header file in main.ino/main.cpp (or wherever you need it)
  * 3. Either add "using namespace RSys;" or just prefix all ButtonMatrix types with "RSys::" (i.e. "RSys::Button")
@@ -62,7 +62,7 @@ uint8_t colPins[COLS] = {7,8,9}; /** Button matrix column pins */
 uint8_t rowPins[ROWS] = {4,5,6}; /** Button matrix row pins */
 
 /** Button matrix button definitons */
-RSys::Button buttons[ROWS][COLS] = {
+Button buttons[ROWS][COLS] = {
     { (1), (2), (3) },
     { (4), (5), (6) },
     { (7), (8), (9) }
@@ -74,7 +74,7 @@ ButtonMatrix matrix((Button*)buttons, rowPins, colPins, ROWS, COLS);
 void setup()
 {
     Serial.begin(c_uiMonitorBaud);
-    
+
     matrix.init();  /** Initialize the ButtonMatrix*/
 }
 
@@ -91,23 +91,23 @@ void loop()
     // Make sure to update the matrix frequently. There is a scan interval that defaults to 20ms but can be adjusted by matrix.setScanInterval(..).
     // The update doesn't do anything if the scan interval has not yes elapsed (debouncing and mc load reduction)
     if (matrix.update())
-    {  
-        // There was a change in any of the buttons  
+    {
+        // There was a change in any of the buttons
 
         // Scan all buttons, except the last one
         for (uint16_t idx = 0; idx < numButtons; idx++)
-        {        
-            pButton = matrix.getButton(idx);    
-            if (pButton->fell())      
+        {
+            pButton = matrix.getButton(idx);
+            if (pButton->fell())
             {
-                // Button has rose. The fell() method automatically resets the event so you cannot call it twice for the same occurrence of the event!                 
+                // Button has rose. The fell() method automatically resets the event so you cannot call it twice for the same occurrence of the event!
                Serial.print("Button fell ");Serial.println(pButton->getNumber());
             }
             else if (pButton->rose())
             {
-                // Button has rose. The rose() method automatically resets the event so you cannot call it twice for the same occurrence of the event! 
+                // Button has rose. The rose() method automatically resets the event so you cannot call it twice for the same occurrence of the event!
                 Serial.print("Button rose ");Serial.println(pButton->getNumber());
-            }               
+            }
         }
     }
 
@@ -116,10 +116,10 @@ void loop()
     for (uint16_t idx = 0; idx < numButtons; idx++)
     {
         // get the button with the defined index (you can also get buttons by row and column -> getButton(row, col))
-        pButton = matrix.getButton(idx);        
+        pButton = matrix.getButton(idx);
         if (pButton->isLongPressed(longPressDuration))
         {
-            // Button is pressed long 
+            // Button is pressed long
             Serial.print("Button long pressed ");Serial.println(pButton->getNumber());
 
             // Note: After long press detection, you won't get a rose event by intention when button is being released!

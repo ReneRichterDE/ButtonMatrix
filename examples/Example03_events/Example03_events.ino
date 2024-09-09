@@ -24,7 +24,7 @@
 
 /**
  * What you need to do to work with ButtonMatrix:
- * 
+ *
  *  1. Add the library to your project
  *  2. Include the header file in main.ino/main.cpp (or wherever you need it)
  *  3. Either add "using namespace RSys;" or just prefix all ButtonMatrix types with "RSys::" (i.e. "RSys::Button")
@@ -64,7 +64,7 @@ uint8_t colPins[COLS] = {7,8,9}; /** Button matrix column pins */
 uint8_t rowPins[ROWS] = {4,5,6}; /** Button matrix row pins */
 
 /** Button matrix button definitons */
-RSys::Button buttons[ROWS][COLS] = {
+Button buttons[ROWS][COLS] = {
     { (1), (2), (3) },
     { (4), (5), (6) },
     { (7), (8), (9) }
@@ -78,23 +78,23 @@ ButtonMatrix matrix((Button*)buttons, rowPins, colPins, ROWS, COLS);
 void event_Button_State_changed(Button& button)
 //-----------------------------------------------------------------------------
 {
-    if (button.fell())      
+    if (button.fell())
     {
-        // Button has rose. The fell() method automatically resets the event so you cannot call it twice for the same occurrence of the event!                 
+        // Button has rose. The fell() method automatically resets the event so you cannot call it twice for the same occurrence of the event!
         Serial.print("Button fell "); Serial.println(button.getNumber());
     }
     else if (button.rose())
     {
-        // Button has rose. The rose() method automatically resets the event so you cannot call it twice for the same occurrence of the event! 
+        // Button has rose. The rose() method automatically resets the event so you cannot call it twice for the same occurrence of the event!
         Serial.print("Button rose "); Serial.println(button.getNumber());
-    }  
+    }
 }
 
 
 /** @brief Button action event handler */
 void event_Button_Action(Button& button)
 //-----------------------------------------------------------------------------
-{  
+{
     switch (button.getLastAction())
     {
         case BTN_ACTION_CLICK:
@@ -103,7 +103,7 @@ void event_Button_Action(Button& button)
             break;
 
         case BTN_ACTION_LONG_PRESS:
-            // Button is pressed long 
+            // Button is pressed long
             Serial.print("Button long pressed "); Serial.println(button.getNumber());
             break;
 
@@ -118,7 +118,7 @@ void event_Button_Action(Button& button)
 void setup()
 {
     Serial.begin(c_uiMonitorBaud);
-    
+
     matrix.init();  // Initialize the ButtonMatrix
     matrix.setMinLongPressDuration(longPressDuration); // Set the long press duration in ms
 

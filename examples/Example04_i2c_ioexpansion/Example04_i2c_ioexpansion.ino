@@ -83,7 +83,7 @@ uint8_t rowPins[ROWS] = {0,1,2}; /** Button matrix row pins */
 
 
 /** Button matrix button definitons */
-RSys::Button buttons[ROWS][COLS] = {
+Button buttons[ROWS][COLS] = {
     { (1), (2), (3) },
     { (4), (5), (6) },
     { (7), (8), (9) }

@@ -33,13 +33,13 @@
 
 
 namespace RSys
-{    
+{
     /**
         @brief Provides a simple interface for using a button matrix with Arduino
                (similar to KeyMap but with more flexibility and a more object oriented approach)
                Used by the ButtonMatrix class, but can also be used standalone
-      
-    */    
+
+    */
     class ButtonMatrix
     {
     public:
@@ -48,7 +48,7 @@ namespace RSys
             @brief  Button event callback type
             @param  Button&
                     Reference to the button
-        */  
+        */
         typedef void (*btnEventFnc)(Button&);
 
         /**
@@ -66,7 +66,7 @@ namespace RSys
                     Number of columns the button matrix has
                     (the number of elements in the colPins array must be adequate)
             @param  ioItf
-                    Reference to the IO handler implementation to be used                    
+                    Reference to the IO handler implementation to be used
         */
         ButtonMatrix(
                 Button* buttons, uint8_t* rowPins, uint8_t* colPins,
@@ -74,19 +74,29 @@ namespace RSys
                 IOHandlerItf& ioItf = NativeIOHandler::getDefault());
 
         /**
-            @brief  Gets the current scan interval                    
+            @brief  Gets the current scan interval
             @return Scan interval in ms
         */
         inline uint16_t getScanInterval() const { return m_scanInterval; }
 
         /**
-            @brief  Sets the interval in ms the button matrix state is queried 
+            @brief  Sets the interval in ms the button matrix state is queried
                     This is used for debouncing as well as to limit CPU time usage
                     (default is 20 ms)
             @param  scanInterval
                     Minimum interval between to button matrix scan processes
         */
         void setScanInterval(uint16_t scanInterval);
+
+        /**
+            @brief  Sets or resets input inversion, so a button is recognized as being
+                    pressed when the input signals a HIGH instead of a LOW
+            @param  invertInput
+                    True to signal a pressed button when input is going to HIGH
+                    False to signal a pressed button when input is going to LOW (standard behaviour)
+        */
+        void setInvertInput(bool invertInput = true);
+
 
         /**
             @brief  Initializes the button matrix
@@ -96,11 +106,11 @@ namespace RSys
         bool init();
 
         /**
-            @brief  Call update() to update the button matrix state. 
+            @brief  Call update() to update the button matrix state.
                     Should be called each time the Arduinos loop() function is executed
                     (the function itself takes care of complying with the the scanInterval)
             @return True if the state of any button in the matrix has changed during the scan
-        */      
+        */
         bool update();
 
         /**
@@ -109,7 +119,7 @@ namespace RSys
                     Index into the matrix (staring with 0 and limited by numRows * numCols - 1)
             @return Pointer to the button object at the given index
                     or NULL if the index is out of range
-        */ 
+        */
         Button* getButton(uint16_t idx) const;
 
         /**
@@ -121,18 +131,18 @@ namespace RSys
             @return Pointer to the button object at the given position
                     or NULL if the position is out of range
         */
-        Button* getButton(uint8_t row, uint8_t col);        
+        Button* getButton(uint8_t row, uint8_t col);
 
         /**
             @brief  Gets the number of buttons in the matrix
             @return Number of buttons
-        */ 
+        */
         inline uint16_t getNumButtons() const { return m_numButtons; }
 
         /**
             @brief  Gets the number of rows in the matrix
             @return Number of rows
-        */ 
+        */
         inline uint8_t getNumRows() const { return m_numRows; }
 
         /**
@@ -169,7 +179,7 @@ namespace RSys
                     previously set!
             @param  cb
                     Callback function
-        */        
+        */
         void registerButtonStateEventCallback(btnEventFnc cb);
 
 
@@ -188,6 +198,8 @@ namespace RSys
         uint16_t        m_LongPressMS;  /** Time in ms a after that a long press is determined */
 
         const uint16_t  m_numButtons;   /** Total number of button. Just to avoid recurring calculations */
+
+        bool m_invertInput;
 
         btnEventFnc     m_buttonActionCallback; /** Button action callback */
         btnEventFnc     m_buttonEventCallback;  /** Button state changed callback */

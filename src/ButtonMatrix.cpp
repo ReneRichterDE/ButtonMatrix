@@ -25,8 +25,8 @@
 
 
 namespace RSys
-{    
-    
+{
+
     ButtonMatrix::ButtonMatrix(
                         Button* buttons,
                         uint8_t* rowPins, uint8_t* colPins,
@@ -43,9 +43,9 @@ namespace RSys
         m_lastScan(0),
         m_LongPressMS(s_defaultLongPressMS),
         m_numButtons(numRows * numCols),
+        m_invertInput(false),
         m_buttonActionCallback(NULL),
         m_buttonEventCallback(NULL)
-
     {
     }
 
@@ -57,10 +57,17 @@ namespace RSys
     }
 
 
-    
+    void ButtonMatrix::setInvertInput(bool invertInput)
+    //-----------------------------------------------------------------------------
+    {
+        m_invertInput = invertInput;
+    }
+
+
+
     bool ButtonMatrix::init()
     //-----------------------------------------------------------------------------
-    { 
+    {
         // set all row pins as INPUT_PULLUP
         for (uint8_t row = 0; row < m_numRows; row++)
         {
@@ -80,7 +87,7 @@ namespace RSys
     }
 
 
-    
+
     bool ButtonMatrix::update()
     //-----------------------------------------------------------------------------
     {
@@ -103,8 +110,8 @@ namespace RSys
                     if (NULL != pBut)
                     {
                         auto pBtnItf = static_cast<ButtonBaseItf*>(pBut);
-                        BTN_STATE state = (m_ioItf.digitalRead(m_rowPins[row]) == LOW)
-                                                ? BTN_STATE_PRESSED 
+                        BTN_STATE state = (m_ioItf.digitalRead(m_rowPins[row]) == (m_invertInput ? HIGH : LOW))
+                                                ? BTN_STATE_PRESSED
                                                 : BTN_STATE_RELEASED;
                         bool bChanged = pBtnItf->updateState(state);
                         if (bChanged && NULL != m_buttonEventCallback)
@@ -125,7 +132,7 @@ namespace RSys
                                 pBtnItf->updateAction(BTN_ACTION_LONG_PRESS);
                                 m_buttonActionCallback(*pBut);
                             }
-                        }                    
+                        }
 
                         // we need to report back if any button has changed its state
                         hasAnyButtonChanged = hasAnyButtonChanged || bChanged;
@@ -136,7 +143,7 @@ namespace RSys
                 // same row and not causing a short in this situation
                 m_ioItf.digitalWrite(m_colPins[col], HIGH);
                 m_ioItf.pinMode(m_colPins[col], INPUT);
-            }  
+            }
 
             // lets remember our last scan timestamp
             m_lastScan = millis();
@@ -149,7 +156,7 @@ namespace RSys
 
     Button* ButtonMatrix::getButton(uint16_t idx) const
     //-----------------------------------------------------------------------------
-    {       
+    {
         // make sure to only return a valid button inside the valid range
         return ((idx < m_numButtons) ? &m_pButtons[idx] : NULL);
     }

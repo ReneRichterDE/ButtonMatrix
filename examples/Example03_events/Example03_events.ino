@@ -120,6 +120,7 @@ void setup()
     Serial.begin(c_uiMonitorBaud);
 
     matrix.init();  // Initialize the ButtonMatrix
+    //matrix.setInvertInput(); /** Uncomment if you get a pressed signal while button is released and vice versa */
     matrix.setMinLongPressDuration(longPressDuration); // Set the long press duration in ms
 
     // register the callback for state change events

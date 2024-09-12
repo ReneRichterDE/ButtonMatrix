@@ -73,7 +73,8 @@ void setup()
 {
     Serial.begin(c_uiMonitorBaud);
 
-    matrix.init();  /** Initialize the ButtonMatrix*/
+    matrix.init();  /** Initialize the ButtonMatrix */
+    //matrix.setInvertInput(); /** Uncomment if you get a pressed signal while button is released and vice versa */
 }
 
 

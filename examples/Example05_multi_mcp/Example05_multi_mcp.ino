@@ -57,9 +57,9 @@
 // Adafruit include
 #include <Adafruit_MCP23X17.h>
 
-const uint8_t numMCPs = 3;
+const uint8_t numMCPs = 2;
 Adafruit_MCP23X17 mcp[numMCPs]; /** Instances of the MCP23x17 controller interface */
-const int mcp_addr[numMCPs] = {0x27, 0x28, 0x29 }; /** Each MCP needs its own address */
+const int mcp_addr[numMCPs] = {0x27, 0x28 }; /** Each MCP needs its own address */
 
 
 
@@ -80,6 +80,9 @@ const uint16_t longPressDuration = 1000; /** Minimum duration of a long press */
 const uint8_t COLS = 3; /** Number of button matrix columns */
 const uint8_t ROWS = 3; /** Number of button matrix rows */
 
+// Note: Each MCP board has its own number range
+//       Board 1 goes from 0-99, board 2 goes from 100-199 and so on
+//       The number within each range selects the physical pin on the board associated to the range
 uint8_t colPins[COLS] = {100,101,102}; /** Button matrix column pins (0-2 on second mcp) */
 uint8_t rowPins[ROWS] = {000,001,002}; /** Button matrix row pins    (0-2 on first mcp) */
 

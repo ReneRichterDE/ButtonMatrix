@@ -7,6 +7,7 @@ Arduino/ESP library for keypad support
 The library allows easy interfacing with a keypad.
 Not only keypads connected directly to the IO pins of the microcontroller are supported, but also via I2C.
 There is a connector provided for the Adafruit MCP23017 library, but you can also easily create your custom one if required.
+In addition to this large keypads connected to multiple MCP boards are now supported.
 
 Development of the library has been inspired by the Keypad library of Mark Stanley and Alexander Brevig
 I wanted it to be more flexible and implement a more object oriented approach.
@@ -30,8 +31,3 @@ This library is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU Lesser General Public License for more details.
-
-
-
-
-

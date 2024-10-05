@@ -83,6 +83,7 @@ const uint8_t ROWS = 3; /** Number of button matrix rows */
 // Note: Each MCP board has its own number range
 //       Board 1 goes from 0-99, board 2 goes from 100-199 and so on
 //       The number within each range selects the physical pin on the board associated to the range
+//       You can mix boards as you like
 uint8_t colPins[COLS] = {100,101,102}; /** Button matrix column pins (0-2 on second mcp) */
 uint8_t rowPins[ROWS] = {000,001,002}; /** Button matrix row pins    (0-2 on first mcp) */
 

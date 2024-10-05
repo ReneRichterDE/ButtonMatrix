@@ -1,12 +1,12 @@
 /**
   *****************************************************************************
   Module        ButtonMatrix
-  @file         Adafruit_I2CIOHandler.h
+  @file         AdafruitI2CIOHandler.h
   -----------------------------------------------------------------------------
   @brief        Handles IO connected via Adafruit I2C interface for the ButtonMatrix
   -----------------------------------------------------------------------------
   @author       Rene Richter
-  @contact      
+  @contact
   @date         11.01.2024
   @modified     -
   @copyright    (c) 2023-2024 Rene Richter
@@ -30,11 +30,11 @@
 
 
 namespace RSys
-{ 
+{
     /**
         @brief  Helper to create an io handler instance
         @param  mcp
-                Concrete I2C implementation object earlier instantiated        
+                Concrete I2C implementation object earlier instantiated
     */
     #define ADFI2C(mcp) AdafruitI2CIOHandler<decltype(mcp)>::getInstance(mcp)
 
@@ -44,7 +44,7 @@ namespace RSys
         @brief  Handles I2C IO by means of the Adafruit MCP23017 Arduino library implementation
         @tparam I2CImpl
                 I2C handler implementation
-        @implements IOHandlerItf      
+        @implements IOHandlerItf
     */
     template <class I2CImpl>
     class AdafruitI2CIOHandler : public IOHandlerItf
@@ -66,21 +66,28 @@ namespace RSys
             return m_i2cImpl.digitalRead(pin);
         }
 
-
+       /**
+            @brief  Returns the implementation for an Adafruit I2C handler
+            @param  i2cImpl
+                    Reference to the MCP implementation
+            @return Reference to the implementation
+        */
         static inline IOHandlerItf& getInstance(I2CImpl& i2cImpl)
-        {            
+        {
             return *(new AdafruitI2CIOHandler(i2cImpl));
         }
 
     private:
 
-        /**
-            @brief  Returns the implementation for an Adafruit I2C handler
+       /**
+            @brief  c'tor
+            @param  i2cImpl
+                    Reference to the MCP implementation
             @return Reference to the implementation
-        */ 
+        */
         AdafruitI2CIOHandler(I2CImpl& i2cImpl)
         :   m_i2cImpl(i2cImpl)
-        {        
+        {
         }
 
         I2CImpl& m_i2cImpl; /** Reference to the Adafruit I2C implementation */

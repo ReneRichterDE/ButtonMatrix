@@ -84,6 +84,9 @@ const uint8_t ROWS = 3; /** Number of button matrix rows */
 //       Board 1 goes from 0-99, board 2 goes from 100-199 and so on
 //       The number within each range selects the physical pin on the board associated to the range
 //       You can arrange pins across boards as you like
+//       Pin number mapping for each board:
+//          0 ..  7: GPA0 .. GPA7
+//          8 .. 15: GPB0 .. GPB7
 uint8_t colPins[COLS] = {100,101,102}; /** Button matrix column pins (0-2 on second mcp) */
 uint8_t rowPins[ROWS] = {000,001,002}; /** Button matrix row pins    (0-2 on first mcp) */
 

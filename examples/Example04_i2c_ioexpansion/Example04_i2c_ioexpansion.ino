@@ -78,6 +78,9 @@ const uint16_t longPressDuration = 1000; /** Minimum duration of a long press */
 const uint8_t COLS = 3; /** Number of button matrix columns */
 const uint8_t ROWS = 3; /** Number of button matrix rows */
 
+// Pin number mapping:
+//   0 ..  7: GPA0 .. GPA7
+//   8 .. 15: GPB0 .. GPB7
 uint8_t colPins[COLS] = {4,5,6}; /** Button matrix column pins */
 uint8_t rowPins[ROWS] = {0,1,2}; /** Button matrix row pins */
 

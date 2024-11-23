@@ -33,12 +33,12 @@ namespace RSys
     /**
         @brief Representation of a button.
                Used by the ButtonMatrix class, but can also be used standalone
-      
+
     */
     class Button : public ButtonBaseItf
     {
     public:
-       
+
 
         /**
             @brief  c'tor
@@ -49,6 +49,11 @@ namespace RSys
                     A disabled button does not notify anything and always reports RELEASED state!
         */
         Button(uint8_t number, bool bEnabled = true);
+
+        /**
+            @brief  d'tor
+        */
+        virtual ~Button() {};
 
         /**
             @brief  Gets the buttons number
@@ -67,25 +72,25 @@ namespace RSys
             @param  bEnabled
                     True for enabled
                     A disabled button does not notify anything and always reports RELEASED state!
-        */        
+        */
         void setEnabled(bool bEnabled);
 
         /**
             @brief  Determines the current state of the button
             @return The buttons current state
-        */ 
+        */
         BTN_STATE getCurState() const;
 
         /**
             @brief  Determines the previous state of the button
             @return The buttons previous state
-        */         
-        BTN_STATE getPrevState() const;   
+        */
+        BTN_STATE getPrevState() const;
 
         /**
             @brief  Determines whether or not the button is pressed
             @return True, if the button is currently pressed
-        */         
+        */
         bool isPressed() const;
 
         /**
@@ -93,19 +98,19 @@ namespace RSys
             @param  ms
                     Time period in ms after which a press duration is seen as a long press
             @return True, if the button is long pressed
-        */         
+        */
         bool isLongPressed(uint16_t ms) const;
 
         /**
             @brief  Determines the duration the button is in the current state
             @return The duration in ms (roll over after ~50 days!)
-        */  
+        */
         unsigned long getCurStateDuration() const;
 
         /**
             @brief  Determines the duration the button was in the previous state
             @return The duration in ms (roll over after ~50 days!)
-        */          
+        */
         unsigned long getPrevStateDuration() const;
 
         /**
@@ -116,9 +121,9 @@ namespace RSys
                     If set to true the rose transition will not be notified.
                     You only need to set this to false if you have previously decided to swallow
                     and now want to revert that decision
-        */  
+        */
         void swallowNextRoseEvent(bool bSwallow = true);
-             
+
 
         /**
             @brief  Determines whether or not the buttons state has changed
@@ -131,14 +136,14 @@ namespace RSys
             @brief  Determines whether the buttons state fell (from RELEASED to PRESSED)
                     The fell flag is reset afterwards
             @return True, if the button state fell
-        */  
+        */
         bool fell() const;
 
         /**
             @brief  Determines whether the buttons state rose (from PRESSED to RELEASED)
                     The rose flag is reset afterwards
             @return True, if the button state rose
-        */         
+        */
         bool rose() const;
 
         /**
@@ -146,30 +151,30 @@ namespace RSys
             @param  resetafter
                     If true, the last action is reset to none afterwards
             @return Action last executed
-        */ 
+        */
         BTN_ACTION getLastAction(bool resetafter = true) const;
 
     protected:
 
         /**
-            @brief  Updates the button with a new state. 
+            @brief  Updates the button with a new state.
                     If the state is different to the current state, the change will be notified!
                     (Left the method public to allow usage independent of the ButtonMatrix)
             @return True, if the state has changed or false if the new state is the same as the previous
-        */     
-        virtual bool updateState(const BTN_STATE newState);  
+        */
+        virtual bool updateState(const BTN_STATE newState);
 
         /**
-            @brief  Updates the buttons last executed action 
+            @brief  Updates the buttons last executed action
             @param  action
                     Action executed
-        */ 
+        */
         virtual void updateAction(const BTN_ACTION action);
 
         /**
             @brief Determine if the click action shall be notified
             @return True, if click action shall be notified
-        */ 
+        */
         virtual bool doNotifyClick();
 
     private:
